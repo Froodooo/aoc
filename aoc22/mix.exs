@@ -1,4 +1,4 @@
-defmodule Aoc22.MixProject do
+defmodule AoC22.MixProject do
   use Mix.Project
 
   def project do
