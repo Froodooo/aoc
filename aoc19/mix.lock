@@ -1,8 +1,0 @@
-%{
-  "benchee": {:hex, :benchee, "1.0.1", "66b211f9bfd84bd97e6d1beaddf8fc2312aaabe192f776e8931cb0c16f53a521", [:mix], [{:deep_merge, "~> 1.0", [hex: :deep_merge, repo: "hexpm", optional: false]}], "hexpm"},
-  "coerce": {:hex, :coerce, "1.0.1", "211c27386315dc2894ac11bc1f413a0e38505d808153367bd5c6e75a4003d096", [:mix], [], "hexpm"},
-  "deep_merge": {:hex, :deep_merge, "1.0.0", "b4aa1a0d1acac393bdf38b2291af38cb1d4a52806cf7a4906f718e1feb5ee961", [:mix], [], "hexpm"},
-  "math": {:hex, :math, "0.3.0", "e14e7291115201cb155a3567e66d196bf5088a6f55b030d598107d7ae934a11c", [:mix], [], "hexpm"},
-  "numbers": {:hex, :numbers, "5.1.1", "1277dbee5dc73b0e1608bd6d318bd8338cbcba5b68cade65f24e4bb402676b5c", [:mix], [{:coerce, "~> 1.0", [hex: :coerce, repo: "hexpm", optional: false]}, {:decimal, "~> 1.5", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm"},
-  "ratio": {:hex, :ratio, "2.2.2", "c26013b9af7d03cf451bbe11608046e4c9d06e127f5e387668ae97163e75a6dd", [:mix], [{:numbers, "~> 5.1.0", [hex: :numbers, repo: "hexpm", optional: false]}], "hexpm"},
-}
