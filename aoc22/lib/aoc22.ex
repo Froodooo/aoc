@@ -1,18 +1,7 @@
 defmodule AoC22 do
-  @moduledoc """
-  Documentation for `Aoc22`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> AoC22.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  @spec solve(non_neg_integer(), non_neg_integer()) :: any
+  def solve(day, part) do
+    module = String.to_existing_atom("Elixir.AoC22.Day#{day}.#{if part == 1, do: "A", else: "B"}")
+    module.solve(day)
   end
 end
