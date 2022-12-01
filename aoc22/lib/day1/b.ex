@@ -1,9 +1,9 @@
 defmodule AoC22.Day1.B do
   alias AoC22.Io
 
-  def solve(year, day, input \\ nil) do
-    year
-    |> Io.input(day, input)
+  def solve(input) do
+    input
+    |> Io.input()
     |> Io.to_list("\n\n")
     |> Enum.map(&split_and_parse/1)
     |> Enum.map(&Enum.sum/1)

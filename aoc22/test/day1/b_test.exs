@@ -4,6 +4,6 @@ defmodule BTest do
   alias AoC22.Day1.B
 
   test "solve" do
-    assert B.solve(2022, 1, "input/1_test_1.txt") == 45000
+    assert B.solve("input/1_test_1.txt") == 45000
   end
 end
