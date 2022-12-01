@@ -1,4 +1,4 @@
-defmodule ATest do
+defmodule AoC22.Day1.ATest do
   use ExUnit.Case
 
   alias AoC22.Day1.A

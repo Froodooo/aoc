@@ -1,4 +1,4 @@
-defmodule BTest do
+defmodule AoC22.Day1.BTest do
   use ExUnit.Case
 
   alias AoC22.Day1.B
