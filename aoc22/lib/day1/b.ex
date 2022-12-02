@@ -1,9 +1,9 @@
 defmodule AoC22.Day1.B do
-  alias AoC22.Io
+  alias AoC22.Utils
 
   def solve(input) do
     input
-    |> Io.input()
+    |> Utils.input()
     |> String.split("\n\n")
     |> Enum.map(&split_and_parse/1)
     |> Enum.map(&Enum.sum/1)

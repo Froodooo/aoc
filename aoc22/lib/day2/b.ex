@@ -1,5 +1,5 @@
 defmodule AoC22.Day2.B do
-  alias AoC22.Io
+  alias AoC22.Utils
 
   @rock 1
   @paper 2
@@ -11,7 +11,7 @@ defmodule AoC22.Day2.B do
 
   def solve(input) do
     input
-    |> Io.input()
+    |> Utils.input()
     |> String.split("\n")
     |> Enum.map(&String.split/1)
     |> Enum.reduce(0, &score/2)
