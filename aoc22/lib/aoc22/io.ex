@@ -13,15 +13,4 @@ defmodule AoC22.Io do
     |> File.read!()
     |> String.trim()
   end
-
-  @spec to_list(binary) :: [binary]
-  def to_list(text, pattern \\ "\n") do
-    text
-    |> String.split(pattern)
-  end
-
-  @spec to_number(list(binary)) :: [number]
-  def to_number(list) do
-    Enum.map(list, &String.to_integer/1)
-  end
 end

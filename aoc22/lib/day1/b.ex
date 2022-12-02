@@ -4,7 +4,7 @@ defmodule AoC22.Day1.B do
   def solve(input) do
     input
     |> Io.input()
-    |> Io.to_list("\n\n")
+    |> String.split("\n\n")
     |> Enum.map(&split_and_parse/1)
     |> Enum.map(&Enum.sum/1)
     |> Enum.sort(:desc)
@@ -15,6 +15,6 @@ defmodule AoC22.Day1.B do
   defp split_and_parse(calories) do
     calories
     |> String.split("\n")
-    |> Io.to_number()
+    |> Enum.map(&String.to_integer/1)
   end
 end
