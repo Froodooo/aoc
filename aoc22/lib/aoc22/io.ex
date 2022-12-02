@@ -9,13 +9,14 @@ defmodule AoC22.Io do
   end
 
   def input(input) when is_binary(input) do
-    File.read!(input)
+    input
+    |> File.read!()
+    |> String.trim()
   end
 
   @spec to_list(binary) :: [binary]
   def to_list(text, pattern \\ "\n") do
     text
-    |> String.trim()
     |> String.split(pattern)
   end
 

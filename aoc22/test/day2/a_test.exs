@@ -4,6 +4,6 @@ defmodule AoC22.Day2.ATest do
   alias AoC22.Day2.A
 
   test "solve" do
-    assert A.solve("input/1_test_1.txt") == :result
+    assert A.solve("input/2_test_1.txt") == 15
   end
 end
