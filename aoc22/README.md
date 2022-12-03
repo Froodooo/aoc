@@ -1,21 +1,9 @@
 # AoC22
 
-**TODO: Add description**
+# How to run
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `aoc22` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:aoc22, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/aoc22>.
-
+1. Log in to [Advent of Code](https://adventofcode.com/).
+2. Get your cookie (e.g. in Chrome via Developer Tools > Network > adventofcode.com > cookie).
+3. Add an environment variable for your cookie (e.g. in bashrc or zshrc, do `export AOC22_COOKIE=<your-cookie>`).
+4. From the root directory, run `iex -S mix`.
+5. Solve either part of whatever (supported) day by running `AoC22.solve(day, part)` (e.g. `AoC22.solve(3, 1)` for day 3, part 1).
