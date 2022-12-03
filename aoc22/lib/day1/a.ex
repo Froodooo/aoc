@@ -13,7 +13,6 @@ defmodule AoC22.Day1.A do
   defp split_and_parse(calories) do
     calories
     |> String.split("\n")
-    |> IO.inspect()
     |> Enum.map(&String.to_integer/1)
   end
 end
