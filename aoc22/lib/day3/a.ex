@@ -1,8 +1,8 @@
 defmodule AoC22.Day3.A do
   alias AoC22.Utils
 
-  @uppercase_threshold 97
-  @uppercase_start 26
+  @rucksack_parts 2
+  @uppercase_offset 26
 
   def solve(input) do
     input
@@ -15,7 +15,7 @@ defmodule AoC22.Day3.A do
 
   defp find_duplicate(rucksack) do
     rucksack
-    |> divide_in(2)
+    |> divide_in(@rucksack_parts)
     |> intersect()
   end
 
@@ -37,8 +37,8 @@ defmodule AoC22.Day3.A do
     ascii = item |> String.to_charlist() |> hd()
 
     cond do
-      ascii < @uppercase_threshold ->
-        @uppercase_start + ascii - ("A" |> String.to_charlist() |> hd()) + 1
+      ascii < "a" |> String.to_charlist() |> hd() ->
+        @uppercase_offset + ascii - ("A" |> String.to_charlist() |> hd()) + 1
 
       true ->
         ascii - ("a" |> String.to_charlist() |> hd()) + 1
