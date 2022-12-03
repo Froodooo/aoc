@@ -1,5 +1,5 @@
 defmodule AoC22.DayX.B do
-  # alias AoC22.Io
+  # alias AoC22.Utils
 
   def solve(_input) do
     :result

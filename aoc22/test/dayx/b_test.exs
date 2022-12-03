@@ -4,6 +4,6 @@ defmodule AoC22.DayX.BTest do
   alias AoC22.DayX.B
 
   test "solve" do
-    assert B.solve("input/1_test_1.txt") == :result
+    assert B.solve("input/x_test_1.txt") == :result
   end
 end
