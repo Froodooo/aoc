@@ -18,15 +18,6 @@ defmodule AoC22.Day5.Parse do
     |> Enum.map(&parse_instruction/1)
   end
 
-  defp update_stacks_map(stacks_map, _index, []), do: stacks_map
-
-  defp update_stacks_map(stacks_map, index, crate) do
-    case Map.get(stacks_map, index) do
-      nil -> Map.put(stacks_map, index, [crate])
-      _ -> Map.update!(stacks_map, index, fn x -> x ++ [crate] end)
-    end
-  end
-
   defp normalize_crates(crates) do
     Enum.map(crates, &normalize_crate/1)
   end
@@ -48,6 +39,15 @@ defmodule AoC22.Day5.Parse do
       end)
 
     stacks_map
+  end
+
+  defp update_stacks_map(stacks_map, _index, []), do: stacks_map
+
+  defp update_stacks_map(stacks_map, index, crate) do
+    case Map.get(stacks_map, index) do
+      nil -> Map.put(stacks_map, index, [crate])
+      _ -> Map.update!(stacks_map, index, fn x -> x ++ [crate] end)
+    end
   end
 
   defp remove_last(stacks) do
