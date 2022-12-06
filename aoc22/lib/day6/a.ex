@@ -5,7 +5,7 @@ defmodule AoC22.Day6.A do
 
   def solve(input) do
     input
-    |> Utils.input(nil)
+    |> Utils.input()
     |> String.graphemes()
     |> Enum.chunk_every(@chunk_size, 1)
     |> Enum.with_index()
