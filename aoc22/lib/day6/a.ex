@@ -9,12 +9,12 @@ defmodule AoC22.Day6.A do
     |> String.graphemes()
     |> Enum.chunk_every(@chunk_size, 1)
     |> Enum.with_index()
-    |> Enum.find(&unique/1)
+    |> Enum.find(&unique?/1)
     |> elem(1)
     |> Kernel.+(@chunk_size)
   end
 
-  defp unique({characters, _index}) do
+  defp unique?({characters, _index}) do
     characters |> MapSet.new() |> MapSet.to_list() |> length() == @chunk_size
   end
 end
