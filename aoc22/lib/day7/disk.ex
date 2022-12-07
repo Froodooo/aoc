@@ -1,5 +1,4 @@
 defmodule AoC22.Day7.Disk do
-  @dir_separator "\\"
 
   def traverse(instructions, path \\ [], dir_sizes \\ %{})
 
@@ -22,8 +21,7 @@ defmodule AoC22.Day7.Disk do
       path
       |> Enum.with_index(1)
       |> Enum.reduce(dir_sizes, fn {_, index}, dir_sizes ->
-        path_part = Enum.take(path, index)
-        update_dir_sizes(dir_sizes, Enum.join(path_part, @dir_separator), filesize)
+        update_dir_sizes(dir_sizes, Enum.take(path, index), filesize)
       end)
 
     traverse(rest, path, dir_sizes)
