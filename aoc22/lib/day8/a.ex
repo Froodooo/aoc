@@ -15,7 +15,7 @@ defmodule AoC22.Day8.A do
   defp count_visible_trees(trees) do
     1..(Enum.count(trees) - 1 - @number_of_trees_to_skip)
     |> Enum.reduce(0, fn y, count ->
-      Enum.reduce(1..(Enum.count(trees[0]) - 2), count, fn x, count ->
+      Enum.reduce(1..(Enum.count(trees[0]) - 1 - @number_of_trees_to_skip), count, fn x, count ->
         if visible?({x, y}, trees), do: count + 1, else: count
       end)
     end)
