@@ -1,5 +1,4 @@
 defmodule AoC22.Day7.Disk do
-
   def traverse(instructions, path \\ [], dir_sizes \\ %{})
 
   def traverse([], _path, dir_sizes), do: dir_sizes
