@@ -1,10 +1,11 @@
 defmodule AoC22.Day8.B do
   alias AoC22.Utils
+  alias AoC22.Day8.Matrix
 
   def solve(input) do
     input
     |> Utils.input()
-    |> to_2d_map()
+    |> Matrix.to_matrix()
     |> count_visible_trees()
     |> Enum.max()
   end
@@ -18,10 +19,12 @@ defmodule AoC22.Day8.B do
   end
 
   defp visible({x, y}, trees) do
-    visible_from_top({x, y}, trees) *
-      visible_from_bottom({x, y}, trees) *
-      visible_from_left({x, y}, trees) *
-      visible_from_right({x, y}, trees)
+    tree = Matrix.get(trees, {x, y})
+
+    visible_from(:top, {x, y}, trees, tree) *
+      visible_from(:bottom, {x, y}, trees, tree) *
+      visible_from(:left, {x, y}, trees, tree) *
+      visible_from(:right, {x, y}, trees, tree)
   end
 
   defp count_next_trees([_next_tree], _tree, count) do
@@ -43,71 +46,36 @@ defmodule AoC22.Day8.B do
   defp chunk_trees([tree_pair]), do: [[tree_pair]]
   defp chunk_trees(tree_pair), do: Enum.chunk_every(tree_pair, 2, 1)
 
-  defp visible_from_top({x, y}, trees) do
-    tree = trees[y][x]
-
+  defp visible_from(:top, {x, y}, trees, tree) do
     (y - 1)..0
     |> Enum.reduce([], &[trees[&1][x] | &2])
-    |> Enum.reverse()
-    |> chunk_trees()
-    |> Enum.reduce_while(0, fn tree_pair, count ->
-      count_next_trees(tree_pair, tree, count)
-    end)
+    |> visible_in_line(tree)
   end
 
-  defp visible_from_bottom({x, y}, trees) do
-    tree = trees[y][x]
-
+  defp visible_from(:bottom, {x, y}, trees, tree) do
     (y + 1)..(Enum.count(trees) - 1)
     |> Enum.reduce([], &[trees[&1][x] | &2])
-    |> Enum.reverse()
-    |> chunk_trees()
-    |> Enum.reduce_while(0, fn tree_pair, count ->
-      count_next_trees(tree_pair, tree, count)
-    end)
+    |> visible_in_line(tree)
   end
 
-  defp visible_from_left({x, y}, trees) do
-    tree = trees[y][x]
-
+  defp visible_from(:left, {x, y}, trees, tree) do
     (x - 1)..0
     |> Enum.reduce([], &[trees[y][&1] | &2])
-    |> Enum.reverse()
-    |> chunk_trees()
-    |> Enum.reduce_while(0, fn tree_pair, count ->
-      count_next_trees(tree_pair, tree, count)
-    end)
+    |> visible_in_line(tree)
   end
 
-  defp visible_from_right({x, y}, trees) do
-    tree = trees[y][x]
-
+  defp visible_from(:right, {x, y}, trees, tree) do
     (x + 1)..(Enum.count(trees[0]) - 1)
     |> Enum.reduce([], &[trees[y][&1] | &2])
+    |> visible_in_line(tree)
+  end
+
+  defp visible_in_line(trees, tree) do
+    trees
     |> Enum.reverse()
     |> chunk_trees()
     |> Enum.reduce_while(0, fn tree_pair, count ->
       count_next_trees(tree_pair, tree, count)
     end)
-  end
-
-  defp to_2d_map(input) do
-    input
-    |> String.split("\n")
-    |> Enum.with_index()
-    |> to_map()
-    |> Enum.map(
-      &{elem(&1, 0),
-       elem(&1, 1)
-       |> String.graphemes()
-       |> Enum.map(fn x -> String.to_integer(x) end)
-       |> Enum.with_index()
-       |> to_map()}
-    )
-    |> Map.new()
-  end
-
-  defp to_map(input) do
-    Map.new(input, &{elem(&1, 1), elem(&1, 0)})
   end
 end
