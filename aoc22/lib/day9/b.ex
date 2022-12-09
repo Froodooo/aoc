@@ -39,18 +39,18 @@ defmodule AoC22.Day9.B do
 
   defp move_tail({hx, hy}, {tx, ty}) do
     cond do
-      hx != tx and hy != ty and hy - ty > 1 and hx - tx >= 1 -> {tx + 1, ty + 1}
-      hx != tx and hy != ty and hy - ty > 1 and hx - tx <= -1 -> {tx - 1, ty + 1}
-      hx != tx and hy != ty and hy - ty < -1 and hx - tx <= -1 -> {tx - 1, ty - 1}
-      hx != tx and hy != ty and hy - ty < -1 and hx - tx >= 1 -> {tx + 1, ty - 1}
-      hx != tx and hy != ty and hx - tx > 1 and hy - ty >= 1 -> {tx + 1, ty + 1}
-      hx != tx and hy != ty and hx - tx > 1 and hy - ty <= -1 -> {tx + 1, ty - 1}
-      hx != tx and hy != ty and hx - tx < -1 and hy - ty <= -1 -> {tx - 1, ty - 1}
-      hx != tx and hy != ty and hx - tx < -1 and hy - ty >= 1 -> {tx - 1, ty + 1}
-      hy == ty and hx - tx > 1 -> {tx + 1, ty}
-      hy == ty and hx - tx < -1 -> {tx - 1, ty}
-      hx == tx and hy - ty > 1 -> {tx, ty + 1}
-      hx == tx and hy - ty < -1 -> {tx, ty - 1}
+      hy - ty > 1 and hx - tx >= 1 -> {tx + 1, ty + 1}
+      hy - ty > 1 and hx - tx <= -1 -> {tx - 1, ty + 1}
+      hy - ty < -1 and hx - tx <= -1 -> {tx - 1, ty - 1}
+      hy - ty < -1 and hx - tx >= 1 -> {tx + 1, ty - 1}
+      hx - tx > 1 and hy - ty >= 1 -> {tx + 1, ty + 1}
+      hx - tx > 1 and hy - ty <= -1 -> {tx + 1, ty - 1}
+      hx - tx < -1 and hy - ty <= -1 -> {tx - 1, ty - 1}
+      hx - tx < -1 and hy - ty >= 1 -> {tx - 1, ty + 1}
+      hx - tx > 1 -> {tx + 1, ty}
+      hx - tx < -1 -> {tx - 1, ty}
+      hy - ty > 1 -> {tx, ty + 1}
+      hy - ty < -1 -> {tx, ty - 1}
       true -> {tx, ty}
     end
   end
