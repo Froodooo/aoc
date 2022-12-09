@@ -14,7 +14,7 @@ defmodule AoC22.Day9.A do
   end
 
   defp move([direction, amount], acc) do
-    Enum.reduce(0..(amount - 1), acc, &(move_once(direction, &2, &1)))
+    Enum.reduce(0..(amount - 1), acc, &move_once(direction, &2, &1))
   end
 
   defp move_once("R", {visited, {hx, hy}, {tx, ty}}, _index) do
@@ -37,56 +37,49 @@ defmodule AoC22.Day9.A do
     {MapSet.put(visited, {ntx, nty}), {hx, hy - 1}, {ntx, nty}}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hy - ty > 1 and hx - tx == 1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hy - ty > 1 and hx - tx == 1 do
     {tx + 1, ty + 1}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hy - ty > 1 and hx - tx == -1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hy - ty > 1 and hx - tx == -1 do
     {tx - 1, ty + 1}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hy - ty < -1 and hx - tx == -1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hy - ty < -1 and hx - tx == -1 do
     {tx - 1, ty - 1}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hy - ty < -1 and hx - tx == 1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hy - ty < -1 and hx - tx == 1 do
     {tx + 1, ty - 1}
   end
 
-
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hx - tx > 1 and hy - ty == 1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hx - tx > 1 and hy - ty == 1 do
     {tx + 1, ty + 1}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hx - tx > 1 and hy - ty == -1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hx - tx > 1 and hy - ty == -1 do
     {tx + 1, ty - 1}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hx - tx < -1 and hy - ty == -1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hx - tx < -1 and hy - ty == -1 do
     {tx - 1, ty - 1}
   end
 
-  defp move_tail({hx, hy}, {tx, ty}) when hx != tx and hy != ty and hx - tx < -1 and hy - ty == 1 do
+  defp move_tail({hx, hy}, {tx, ty})
+       when hx != tx and hy != ty and hx - tx < -1 and hy - ty == 1 do
     {tx - 1, ty + 1}
   end
 
-
-  defp move_tail({hx, y}, {tx, y}) when hx - tx > 1 do
-    {tx + 1, y}
-  end
-
-  defp move_tail({hx, y}, {tx, y}) when hx - tx < -1 do
-    {tx - 1, y}
-  end
-
-  defp move_tail({x, hy}, {x, ty}) when hy - ty > 1 do
-    {x, ty + 1}
-  end
-
-  defp move_tail({x, hy}, {x, ty}) when hy - ty < -1 do
-    {x, ty - 1}
-  end
-
-
+  defp move_tail({hx, y}, {tx, y}) when hx - tx > 1, do: {tx + 1, y}
+  defp move_tail({hx, y}, {tx, y}) when hx - tx < -1, do: {tx - 1, y}
+  defp move_tail({x, hy}, {x, ty}) when hy - ty > 1, do: {x, ty + 1}
+  defp move_tail({x, hy}, {x, ty}) when hy - ty < -1, do: {x, ty - 1}
   defp move_tail(_head, tail), do: tail
 end
