@@ -39,43 +39,43 @@ defmodule AoC22.Day9.B do
 
   # diagonal, x differs 1
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hy - ty > 1 and hx - tx == 1 do
+       when hx != tx and hy != ty and hy - ty > 1 and hx - tx >= 1 do
     {tx + 1, ty + 1}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hy - ty > 1 and hx - tx == -1 do
+       when hx != tx and hy != ty and hy - ty > 1 and hx - tx <= -1 do
     {tx - 1, ty + 1}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hy - ty < -1 and hx - tx == -1 do
+       when hx != tx and hy != ty and hy - ty < -1 and hx - tx <= -1 do
     {tx - 1, ty - 1}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hy - ty < -1 and hx - tx == 1 do
+       when hx != tx and hy != ty and hy - ty < -1 and hx - tx >= 1 do
     {tx + 1, ty - 1}
   end
 
   # diagonal, y differs 1
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hx - tx > 1 and hy - ty == 1 do
+       when hx != tx and hy != ty and hx - tx > 1 and hy - ty >= 1 do
     {tx + 1, ty + 1}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hx - tx > 1 and hy - ty == -1 do
+       when hx != tx and hy != ty and hx - tx > 1 and hy - ty <= -1 do
     {tx + 1, ty - 1}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hx - tx < -1 and hy - ty == -1 do
+       when hx != tx and hy != ty and hx - tx < -1 and hy - ty <= -1 do
     {tx - 1, ty - 1}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
-       when hx != tx and hy != ty and hx - tx < -1 and hy - ty == 1 do
+       when hx != tx and hy != ty and hx - tx < -1 and hy - ty >= 1 do
     {tx - 1, ty + 1}
   end
 
