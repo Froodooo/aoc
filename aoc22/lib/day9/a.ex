@@ -14,27 +14,19 @@ defmodule AoC22.Day9.A do
   end
 
   defp move([direction, amount], acc) do
-    Enum.reduce(0..(amount - 1), acc, &move_once(direction, &2, &1))
+    Enum.reduce(0..(amount - 1), acc, fn _index, {visited, {hx, hy}, tail} ->
+      case direction do
+        "R" -> move_once({visited, {hx + 1, hy}, tail})
+        "L" -> move_once({visited, {hx - 1, hy}, tail})
+        "U" -> move_once({visited, {hx, hy + 1}, tail})
+        "D" -> move_once({visited, {hx, hy - 1}, tail})
+      end
+    end)
   end
 
-  defp move_once("R", {visited, {hx, hy}, {tx, ty}}, _index) do
-    {ntx, nty} = move_tail({hx + 1, hy}, {tx, ty})
-    {MapSet.put(visited, {ntx, nty}), {hx + 1, hy}, {ntx, nty}}
-  end
-
-  defp move_once("L", {visited, {hx, hy}, {tx, ty}}, _index) do
-    {ntx, nty} = move_tail({hx - 1, hy}, {tx, ty})
-    {MapSet.put(visited, {ntx, nty}), {hx - 1, hy}, {ntx, nty}}
-  end
-
-  defp move_once("U", {visited, {hx, hy}, {tx, ty}}, _index) do
-    {ntx, nty} = move_tail({hx, hy + 1}, {tx, ty})
-    {MapSet.put(visited, {ntx, nty}), {hx, hy + 1}, {ntx, nty}}
-  end
-
-  defp move_once("D", {visited, {hx, hy}, {tx, ty}}, _index) do
-    {ntx, nty} = move_tail({hx, hy - 1}, {tx, ty})
-    {MapSet.put(visited, {ntx, nty}), {hx, hy - 1}, {ntx, nty}}
+  defp move_once({visited, {nhx, nhy}, {tx, ty}}) do
+    {ntx, nty} = move_tail({nhx, nhy}, {tx, ty})
+    {MapSet.put(visited, {ntx, nty}), {nhx, nhy}, {ntx, nty}}
   end
 
   defp move_tail({hx, hy}, {tx, ty})
