@@ -37,6 +37,7 @@ defmodule AoC22.Day9.B do
      new_tail_reversed}
   end
 
+  # diagonal, x differs 1
   defp move_tail({hx, hy}, {tx, ty})
        when hx != tx and hy != ty and hy - ty > 1 and hx - tx == 1 do
     {tx + 1, ty + 1}
@@ -57,6 +58,7 @@ defmodule AoC22.Day9.B do
     {tx + 1, ty - 1}
   end
 
+  # diagonal, y differs 1
   defp move_tail({hx, hy}, {tx, ty})
        when hx != tx and hy != ty and hx - tx > 1 and hy - ty == 1 do
     {tx + 1, ty + 1}
@@ -77,9 +79,14 @@ defmodule AoC22.Day9.B do
     {tx - 1, ty + 1}
   end
 
+  # x differs 1
   defp move_tail({hx, y}, {tx, y}) when hx - tx > 1, do: {tx + 1, y}
   defp move_tail({hx, y}, {tx, y}) when hx - tx < -1, do: {tx - 1, y}
+
+  # y differs 1
   defp move_tail({x, hy}, {x, ty}) when hy - ty > 1, do: {x, ty + 1}
   defp move_tail({x, hy}, {x, ty}) when hy - ty < -1, do: {x, ty - 1}
+
+  # base case
   defp move_tail(_head, tail), do: tail
 end
