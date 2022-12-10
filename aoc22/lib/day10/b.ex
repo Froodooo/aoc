@@ -23,25 +23,6 @@ defmodule AoC22.Day10.B do
     |> print()
   end
 
-  defp initialize_crt() do
-    nil |> List.duplicate(@crt_pixels_per_row) |> List.duplicate(@crt_rows) |> Matrix.from_list()
-  end
-
-
-  defp print(matrix) do
-    list = Matrix.to_list(matrix)
-
-    Enum.each(0..(length(list) - 1), fn y ->
-      0..(length(Enum.at(list, 0)) - 1)
-      |> Enum.reduce([], fn x, row ->
-        [matrix[y][x] | row]
-      end)
-      |> Enum.reverse()
-      |> Enum.join()
-      |> IO.puts()
-    end)
-  end
-
   defp parse_line(line) do
     case String.split(line) do
       [instruction, value] -> [instruction, String.to_integer(value)]
@@ -75,5 +56,23 @@ defmodule AoC22.Day10.B do
     else
       put_in(crt[row][pixel], @white_pixel)
     end
+  end
+
+  defp initialize_crt() do
+    nil |> List.duplicate(@crt_pixels_per_row) |> List.duplicate(@crt_rows) |> Matrix.from_list()
+  end
+
+  defp print(matrix) do
+    list = Matrix.to_list(matrix)
+
+    Enum.each(0..(length(list) - 1), fn y ->
+      0..(length(Enum.at(list, 0)) - 1)
+      |> Enum.reduce([], fn x, row ->
+        [matrix[y][x] | row]
+      end)
+      |> Enum.reverse()
+      |> Enum.join()
+      |> IO.puts()
+    end)
   end
 end
