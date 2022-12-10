@@ -4,6 +4,7 @@ defmodule AoC22.Day10.A do
   @sum_start 0
   @register_start 1
   @cycle_start 1
+  @sum_cycles [20, 60, 100, 140, 180, 220]
 
   def solve(input) do
     input
@@ -24,7 +25,7 @@ defmodule AoC22.Day10.A do
   defp run(instruction, acc, inner_cycle \\ 1, do_sum \\ True)
 
   defp run(instruction, {signal_sum, register, cycle}, inner_cycle, do_sum)
-       when do_sum == True and cycle in [20, 60, 100, 140, 180, 220] do
+       when do_sum == True and cycle in @sum_cycles do
     run(instruction, {signal_sum + register * cycle, register, cycle}, inner_cycle, False)
   end
 

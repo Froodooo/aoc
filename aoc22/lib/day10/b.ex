@@ -5,6 +5,12 @@ defmodule AoC22.Day10.B do
   @register_start 1
   @cycle_start 0
 
+  @crt_rows 6
+  @crt_pixels_per_row 40
+
+  @black_pixel "⬛"
+  @white_pixel "⬜"
+
   def solve(input) do
     crt = initialize_crt()
 
@@ -16,6 +22,11 @@ defmodule AoC22.Day10.B do
     |> elem(0)
     |> print()
   end
+
+  defp initialize_crt() do
+    nil |> List.duplicate(@crt_pixels_per_row) |> List.duplicate(@crt_rows) |> Matrix.from_list()
+  end
+
 
   defp print(matrix) do
     list = Matrix.to_list(matrix)
@@ -29,10 +40,6 @@ defmodule AoC22.Day10.B do
       |> Enum.join()
       |> IO.puts()
     end)
-  end
-
-  defp initialize_crt() do
-    nil |> List.duplicate(40) |> List.duplicate(6) |> Matrix.from_list()
   end
 
   defp parse_line(line) do
@@ -64,9 +71,9 @@ defmodule AoC22.Day10.B do
 
   defp put_pixel(crt, register, row, pixel) do
     if register in (pixel - 1)..(pixel + 1) do
-      put_in(crt[row][pixel], "⬛")
+      put_in(crt[row][pixel], @black_pixel)
     else
-      put_in(crt[row][pixel], "⬜")
+      put_in(crt[row][pixel], @white_pixel)
     end
   end
 end
