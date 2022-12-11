@@ -1,36 +1,23 @@
 defmodule AoC22.Day11.A do
   alias AoC22.Utils
-  alias AoC22.Day11.Monkey
+  alias AoC22.Day11.{Monkey, Operation}
+
+  @rounds 20
+  @bored_divider 3
 
   def solve(input) do
     input
     |> Utils.input()
     |> String.split("\n\n")
     |> Enum.map(&Monkey.parse/1)
-    |> to_map()
+    |> Monkey.to_map()
     |> run()
-    |> most_active()
+    |> Monkey.most_active()
     |> Enum.product()
   end
 
-  defp most_active(monkeys) do
-    monkeys
-    |> Enum.reduce([], fn {_, %Monkey{inspected: inspected}}, acc ->
-      [inspected | acc]
-    end)
-    |> Enum.sort(:desc)
-    |> Enum.take(2)
-  end
-
-  defp to_map(monkeys) do
-    monkeys
-    |> Enum.with_index()
-    |> Enum.map(fn {k, v} -> {v, k} end)
-    |> Map.new()
-  end
-
   defp run(monkeys) do
-    Enum.reduce(1..20, monkeys, fn _, acc ->
+    Enum.reduce(1..@rounds, monkeys, fn _, acc ->
       do_round(acc)
     end)
   end
@@ -61,34 +48,19 @@ defmodule AoC22.Day11.A do
        }) do
     new_item =
       item
-      |> do_operation(operation)
+      |> Operation.execute(operation)
       |> do_bored()
 
-    throw_to =
-      new_item
-      |> throw_to(test, test_true, test_false)
-
-    monkeys =
-      update_in(monkeys, [Access.key!(throw_to), Access.key!(:items)], fn current_items ->
-        current_items ++ [new_item]
-      end)
-
-    monkeys =
-      update_in(monkeys, [Access.key!(nr), Access.key!(:items)], fn current_items ->
-        current_items -- [item]
-      end)
-
     monkeys
+    |> update_in(
+      [Access.key!(Monkey.throw_to(new_item, test, test_true, test_false)), Access.key!(:items)],
+      fn current_items -> current_items ++ [new_item] end
+    )
+    |> update_in(
+      [Access.key!(nr), Access.key!(:items)],
+      fn current_items -> current_items -- [item] end
+    )
   end
 
-  defp do_operation(item, {"*", "old"}), do: item * item
-  defp do_operation(item, {"+", "old"}), do: item + item
-  defp do_operation(item, {"*", term}), do: item * term
-  defp do_operation(item, {"+", term}), do: item + term
-
-  defp do_bored(item), do: trunc(item / 3)
-
-  defp throw_to(item, test, test_true, test_false) do
-    if rem(item, test) == 0, do: test_true, else: test_false
-  end
+  defp do_bored(item), do: trunc(item / @bored_divider)
 end

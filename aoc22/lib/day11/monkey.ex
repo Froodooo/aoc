@@ -10,20 +10,13 @@ defmodule AoC22.Day11.Monkey do
   def parse(input) do
     lines = input |> String.split("\n") |> Enum.map(&String.trim/1)
 
-    monkey = parse_monkey_number(Enum.at(lines, 0))
-    starting = parse_starting(Enum.at(lines, 1))
-    operation = parse_operation(Enum.at(lines, 2))
-    test = parse_test(Enum.at(lines, 3))
-    test_true = parse_test_true(Enum.at(lines, 4))
-    test_false = parse_test_false(Enum.at(lines, 5))
-
     %__MODULE__{
-      monkey: monkey,
-      items: starting,
-      operation: operation,
-      test: test,
-      test_true: test_true,
-      test_false: test_false
+      monkey: parse_monkey_number(Enum.at(lines, 0)),
+      items: parse_starting(Enum.at(lines, 1)),
+      operation: parse_operation(Enum.at(lines, 2)),
+      test: parse_test(Enum.at(lines, 3)),
+      test_true: parse_test_true(Enum.at(lines, 4)),
+      test_false: parse_test_false(Enum.at(lines, 5))
     }
   end
 
@@ -53,5 +46,25 @@ defmodule AoC22.Day11.Monkey do
 
   defp parse_test_false(input) do
     input |> String.replace("If false: throw to monkey ", "") |> String.to_integer()
+  end
+
+  def most_active(monkeys) do
+    monkeys
+    |> Enum.reduce([], fn {_, %__MODULE__{inspected: inspected}}, acc ->
+      [inspected | acc]
+    end)
+    |> Enum.sort(:desc)
+    |> Enum.take(2)
+  end
+
+  def to_map(monkeys) do
+    monkeys
+    |> Enum.with_index()
+    |> Enum.map(fn {k, v} -> {v, k} end)
+    |> Map.new()
+  end
+
+  def throw_to(item, test, test_true, test_false) do
+    if rem(item, test) == 0, do: test_true, else: test_false
   end
 end
