@@ -1,0 +1,7 @@
+defmodule AoC22.Day12.B do
+  # alias AoC22.Utils
+
+  def solve(_input) do
+    :result
+  end
+end
