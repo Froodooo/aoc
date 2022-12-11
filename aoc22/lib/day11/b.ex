@@ -10,12 +10,7 @@ defmodule AoC22.Day11.B do
       |> Enum.map(&Monkey.parse/1)
       |> to_map()
 
-    test_product =
-      monkeys
-      |> Enum.reduce([], fn {_, %Monkey{test: test}}, acc ->
-        [test | acc]
-      end)
-      |> Enum.product()
+    test_product = Enum.reduce(monkeys, 1, fn {_, %Monkey{test: test}}, acc -> test * acc end)
 
     monkeys
     |> run(test_product)
