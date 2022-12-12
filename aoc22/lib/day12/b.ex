@@ -21,39 +21,6 @@ defmodule AoC22.Day12.B do
 
     queue = Matrix.find_all(matrix, ?a)
 
-    bfs(matrix, queue, finish)
-  end
-
-  defp bfs(matrix, queue, finish, visited \\ [])
-
-  defp bfs(_matrix, [{{y, x}, steps} | _queue], {y, x}, _visited), do: steps
-
-  defp bfs(matrix, [{{sy, sx}, steps} | queue], finish, visited) do
-    if {sy, sx} in visited do
-      bfs(matrix, queue, finish, visited)
-    else
-      visited = [{sy, sx} | visited]
-
-      queue =
-        Enum.concat(
-          queue,
-          Enum.filter(
-            [
-              {{sy - 1, sx}, steps + 1},
-              {{sy + 1, sx}, steps + 1},
-              {{sy, sx - 1}, steps + 1},
-              {{sy, sx + 1}, steps + 1}
-            ],
-            fn
-              {{y, x}, _} ->
-                matrix[y][x] != nil and
-                  {y, x} not in visited and
-                  matrix[y][x] <= matrix[sy][sx] + 1
-            end
-          )
-        )
-
-      bfs(matrix, queue, finish, visited)
-    end
+    Matrix.bfs(matrix, queue, finish, [])
   end
 end

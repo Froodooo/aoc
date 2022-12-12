@@ -26,27 +26,6 @@ defmodule AoC22.Day12.Matrix do
 
   defp do_from_list(other, _, _), do: other
 
-  @doc """
-  Converts a zero-indexed map into a multidimensional list.
-
-  ## Example
-
-      iex> matrix = %{0 => %{0 => "x", 1 => "o", 2 => "x"}}
-      ...> Matrix.to_list(matrix)
-      [["x", "o", "x"]]
-  """
-  def to_list(matrix) when is_map(matrix) do
-    do_to_list(matrix)
-  end
-
-  defp do_to_list(matrix) when is_map(matrix) do
-    for {_index, value} <- matrix,
-        into: [],
-        do: do_to_list(value)
-  end
-
-  defp do_to_list(other), do: other
-
   def find(matrix, value) do
     {row, _} =
       Enum.find(matrix, fn {_, row} ->
@@ -68,5 +47,39 @@ defmodule AoC22.Day12.Matrix do
         x <- 0..(Enum.count(matrix[y]) - 1),
         matrix[y][x] == value,
         do: {{y, x}, 0}
+  end
+
+  def bfs(_matrix, [{{y, x}, steps} | _queue], {y, x}, _visited), do: steps
+
+  def bfs(matrix, [{{sy, sx}, steps} | queue], finish, visited) do
+    cond do
+      {sy, sx} in visited -> bfs(matrix, queue, finish, visited)
+      true -> do_bfs(matrix, [{{sy, sx}, steps} | queue], finish, visited)
+    end
+  end
+
+  defp do_bfs(matrix, [{{sy, sx}, steps} | queue], finish, visited) do
+    visited = [{sy, sx} | visited]
+
+    queue =
+      Enum.concat(
+        queue,
+        Enum.filter(
+          [
+            {{sy - 1, sx}, steps + 1},
+            {{sy + 1, sx}, steps + 1},
+            {{sy, sx - 1}, steps + 1},
+            {{sy, sx + 1}, steps + 1}
+          ],
+          fn
+            {{y, x}, _} ->
+              matrix[y][x] != nil and
+                {y, x} not in visited and
+                matrix[y][x] <= matrix[sy][sx] + 1
+          end
+        )
+      )
+
+    bfs(matrix, queue, finish, visited)
   end
 end
