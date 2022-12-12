@@ -19,6 +19,42 @@ defmodule AoC22.Day12.A do
     matrix = put_in(matrix[sy][sx], ?a)
     matrix = put_in(matrix[fy][fx], ?z)
 
-    Matrix.pathfind(matrix, start, finish)
+    queue = [{start, 0}]
+
+    bfs(matrix, queue, finish)
+  end
+
+  defp bfs(matrix, queue, finish, visited \\ [])
+
+  defp bfs(_matrix, [], _finish, _visited), do: []
+  defp bfs(_matrix, [{{y, x}, steps} | _queue], {y, x}, _visited), do: steps
+
+  defp bfs(matrix, [{{sy, sx}, steps} | queue], finish, visited) do
+    if {sy, sx} in visited do
+      bfs(matrix, queue, finish, visited)
+    else
+      visited = [{sy, sx} | visited]
+
+      queue =
+        Enum.concat(
+          queue,
+          Enum.filter(
+            [
+              {{sy - 1, sx}, steps + 1},
+              {{sy + 1, sx}, steps + 1},
+              {{sy, sx - 1}, steps + 1},
+              {{sy, sx + 1}, steps + 1}
+            ],
+            fn
+              {{y, x}, _} ->
+                matrix[y][x] != nil and
+                  {y, x} not in visited and
+                  matrix[y][x] <= matrix[sy][sx] + 1
+            end
+          )
+        )
+
+      bfs(matrix, queue, finish, visited)
+    end
   end
 end

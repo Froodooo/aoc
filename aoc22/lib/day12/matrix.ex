@@ -63,34 +63,10 @@ defmodule AoC22.Day12.Matrix do
     {row, column}
   end
 
-  def pathfind(matrix, start, finish, visited \\ [], steps \\ 0)
-
-  def pathfind(_matrix, start, finish, _visited, steps) when start == finish, do: steps
-
-  def pathfind(matrix, start, finish, visited, steps) do
-    # IO.inspect({start, finish, visited, steps})
-    {y, x} = start
-
-    visited = [start] ++ visited
-
-    next_steps = get_next_steps(matrix, x, y, visited) # |> IO.inspect(label: :next)
-
-    if next_steps == [] do
-      nil
-    else
-      next_steps
-      |> Enum.map(fn next_step ->
-        pathfind(matrix, next_step, finish, visited, steps + 1)
-      end)
-      |> Enum.min()
-    end
-  end
-
-  defp get_next_steps(matrix, sx, sy, visited) do
-    Enum.filter([{sy - 1, sx}, {sy + 1, sx}, {sy, sx - 1}, {sy, sx + 1}], fn {y, x} ->
-      matrix[y][x] != nil and
-      ({y, x} not in visited) and
-      (abs(matrix[y][x] - matrix[sy][sx]) <= 1)
-    end)
+  def find_all(matrix, value) do
+    for y <- 0..(Enum.count(matrix) - 1),
+        x <- 0..(Enum.count(matrix[y]) - 1),
+        matrix[y][x] == value,
+        do: {{y, x}, 0}
   end
 end
