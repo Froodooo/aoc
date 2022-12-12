@@ -65,7 +65,7 @@ defmodule AoC22.Day12.Matrix do
 
   def pathfind(matrix, start, finish, visited \\ [], steps \\ 0)
 
-  def pathfind(_matrix, start, finish, _visited, steps) when start == finish, do: steps |> IO.inspect()
+  def pathfind(_matrix, start, finish, _visited, steps) when start == finish, do: steps
 
   def pathfind(matrix, start, finish, visited, steps) do
     # IO.inspect({start, finish, visited, steps})
@@ -90,7 +90,7 @@ defmodule AoC22.Day12.Matrix do
     Enum.filter([{sy - 1, sx}, {sy + 1, sx}, {sy, sx - 1}, {sy, sx + 1}], fn {y, x} ->
       matrix[y][x] != nil and
       ({y, x} not in visited) and
-      ((abs(matrix[y][x] - matrix[sy][sx]) <= 1) or ((matrix[sy][sx] == ?S) or (matrix[y][x] == ?E)))
+      (abs(matrix[y][x] - matrix[sy][sx]) <= 1)
     end)
   end
 end
