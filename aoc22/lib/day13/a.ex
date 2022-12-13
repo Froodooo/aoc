@@ -10,7 +10,6 @@ defmodule AoC22.Day13.A do
     |> Enum.map(&zip/1)
     |> Enum.with_index(1)
     |> Enum.map(&compare/1)
-    |> IO.inspect()
     |> Enum.sum()
   end
 
@@ -19,8 +18,6 @@ defmodule AoC22.Day13.A do
     |> Enum.map(&Code.eval_string/1)
     |> Enum.map(&elem(&1, 0))
   end
-
-  defp compare({[], _}), do: 0
 
   defp compare({pairs, index}) do
     Enum.reduce_while(pairs, 0, fn {p1, p2}, acc ->

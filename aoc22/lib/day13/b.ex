@@ -1,14 +1,17 @@
 defmodule AoC22.Day13.B do
   alias AoC22.Utils
 
+  @divider_packet_2 [[2]]
+  @divider_packet_6 [[6]]
+
   def solve(input) do
     input
     |> Utils.input()
     |> String.replace("\n\n", "\n")
     |> String.split("\n")
     |> Enum.map(&eval_packet/1)
-    |> Enum.concat([[[2]]])
-    |> Enum.concat([[[6]]])
+    |> Enum.concat([@divider_packet_2])
+    |> Enum.concat([@divider_packet_6])
     |> bubble_sort()
     |> Enum.with_index(1)
     |> Enum.filter(&divider?/1)
@@ -21,8 +24,6 @@ defmodule AoC22.Day13.B do
     |> Code.eval_string()
     |> elem(0)
   end
-
-  defp compare([]), do: false
 
   defp compare(pairs) do
     Enum.reduce_while(pairs, true, fn {p1, p2}, acc ->
@@ -91,7 +92,7 @@ defmodule AoC22.Day13.B do
     end
   end
 
-  defp divider?({packet, _}) when packet == [[2]], do: true
-  defp divider?({packet, _}) when packet == [[6]], do: true
+  defp divider?({packet, _}) when packet == @divider_packet_2, do: true
+  defp divider?({packet, _}) when packet == @divider_packet_6, do: true
   defp divider?(_), do: false
 end
