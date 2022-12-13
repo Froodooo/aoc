@@ -7,12 +7,10 @@ defmodule AoC22.Day13.A do
     |> String.split("\n\n")
     |> Enum.map(&String.split/1)
     |> Enum.map(&eval_pair/1)
-    # |> Enum.map(&right_order?/1)
-    # |> Enum.map(&unpack/1)
-    |> Enum.map(&equalize/1)
     |> Enum.map(&zip/1)
     |> Enum.with_index(1)
     |> Enum.map(&compare/1)
+    |> IO.inspect()
     |> Enum.sum()
   end
 
@@ -34,21 +32,13 @@ defmodule AoC22.Day13.A do
     end)
   end
 
-  # defp unpack([packet1, packet2]) when is_list(packet1) and is_list(packet2) do
-  #   unpack([Enum.at(packet1, 0), Enum.at(packet2, 0)])
-  # end
-
-  # defp unpack([_packet1, nil]) do
-  #   [[0], [-1]]
-  # end
-
-  # defp unpack([nil, _packet2]) do
-  #   [[-1], [0]]
-  # end
-
-  # defp unpack([packet1, packet2]) do
-  #   [[packet1], [packet2]]
-  # end
+  defp normalize([packet1, packet2]) do
+    case [packet1, packet2] do
+      [_, [-1]] -> [[0], [-1]]
+      [[-1], _] -> [[-1], [0]]
+      _ -> [packet1, packet2]
+    end
+  end
 
   defp equalize([packet1, packet2]) do
     cond do
@@ -60,13 +50,13 @@ defmodule AoC22.Day13.A do
 
       true ->
         [packet1, packet2]
-        # true -> unpack([packet1, packet2]) |> IO.inspect()
     end
   end
 
   defp zip([packet1, packet2]), do: zip(packet1, packet2)
 
   defp zip(packet1, packet2) do
+    [packet1, packet2] = [packet1, packet2] |> normalize() |> equalize()
     zipped = Enum.zip(packet1, packet2)
 
     Enum.map(zipped, fn {z1, z2} ->
