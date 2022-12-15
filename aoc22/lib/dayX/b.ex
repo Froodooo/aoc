@@ -2,7 +2,7 @@ defmodule AoC22.Day15.B do
   alias AoC22.Utils
   alias AoC22.Day15.Sensor
 
-  def solve(input, max \\ 4000000) do
+  def solve(input, max \\ 20) do
     {_min_x, max_x, sensors} =
       input
       |> Utils.input()
@@ -74,7 +74,7 @@ defmodule AoC22.Day15.B do
     end)
   end
 
-  defp covered_by_beacon?(sensors, x, y) do
-    Enum.any?(sensors, fn sensor -> sensor.closest_beacon == {x, y} end)
-  end
+  # defp covered_by_beacon?(sensors, x, y) do
+  #   Enum.any?(sensors, fn sensor -> sensor.closest_beacon == {x, y} end)
+  # end
 end
