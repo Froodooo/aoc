@@ -12,12 +12,23 @@ defmodule AoC22.Day15.B do
     min = 0
     max = Enum.min([max, max_x])
 
-    y = Enum.find(min..max, fn y ->
-      covered = covered_coordinates(sensors, min, max, y)
-      Enum.count(covered) < max + 1
+    checked = MapSet.new()
+
+    y = Enum.reduce_while(min..max, checked, fn y, checked ->
+      {covered, checked} = covered_coordinates(sensors, min, max, y, checked)
+      if Enum.count(covered) < max + 1 do
+        {:halt, y}
+      else
+        {:cont, checked}
+      end
     end)
 
-    covered_x = covered_coordinates(sensors, min, max, y) |> Enum.map(&elem(&1, 0))
+    # y = Enum.find(min..max, fn y ->
+    #   {covered, checked} = covered_coordinates(sensors, min, max, y, checked)
+    #   Enum.count(covered) < max + 1
+    # end)
+
+    covered_x = covered_coordinates(sensors, min, max, y, checked) |> elem(0) |> Enum.map(&elem(&1, 0))
     x = Enum.to_list(min..max) -- covered_x |> Enum.at(0)
     x * 4000000 + y
   end
@@ -58,12 +69,17 @@ defmodule AoC22.Day15.B do
     abs(x1 - x2) + abs(y1 - y2)
   end
 
-  defp covered_coordinates(sensors, min_x, max_x, y) do
-    Enum.reduce(min_x..max_x, [], fn x, acc ->
-      if covered_by_sensor?(sensors, x, y) do
-        [{x, y} | acc]
-      else
-        acc
+  defp covered_coordinates(sensors, min_x, max_x, y, checked) do
+    Enum.reduce(min_x..max_x, {[], checked}, fn x, {acc, checked} ->
+      cond do
+        MapSet.member?(checked, {x, y}) ->
+          {acc, checked}
+
+        covered_by_sensor?(sensors, x, y) ->
+          {[{x, y} | acc], MapSet.put(checked, {x, y})}
+
+        true ->
+          {acc, MapSet.put(checked, {x, y})}
       end
     end)
   end
