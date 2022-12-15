@@ -2,7 +2,7 @@ defmodule AoC22.Day15.A do
   alias AoC22.Utils
   alias AoC22.Day15.Sensor
 
-  def solve(input, y \\ 2000000) do
+  def solve(input, y \\ 10) do
     {min_x, max_x, sensors} =
       input
       |> Utils.input()
