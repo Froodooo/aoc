@@ -2,6 +2,7 @@ defmodule AoC22.Day15.A do
   alias AoC22.Utils
   alias AoC22.Day15.Sensor
 
+  # Set y to a default of 2000000 for the real input
   def solve(input, y \\ 10) do
     {min_x, max_x, sensors} =
       input
@@ -10,7 +11,7 @@ defmodule AoC22.Day15.A do
       |> Enum.reduce({nil, nil, []}, &parse/2)
 
     covered_coordinates(sensors, min_x, max_x, y)
-     |> Enum.count()
+    |> Enum.count()
   end
 
   defp parse(line, {min_x, max_x, sensors}) do
@@ -21,8 +22,15 @@ defmodule AoC22.Day15.A do
 
     manhattan = manhattan_distance(sensor_coordinate, beacon_coordinate)
 
-    min_x = if min_x == nil, do: elem(sensor_coordinate, 0) - manhattan, else: Enum.min([min_x, elem(sensor_coordinate, 0) - manhattan])
-    max_x = if max_x == nil, do: elem(sensor_coordinate, 0) + manhattan, else:  Enum.max([max_x, elem(sensor_coordinate, 0) + manhattan])
+    min_x =
+      if min_x == nil,
+        do: elem(sensor_coordinate, 0) - manhattan,
+        else: Enum.min([min_x, elem(sensor_coordinate, 0) - manhattan])
+
+    max_x =
+      if max_x == nil,
+        do: elem(sensor_coordinate, 0) + manhattan,
+        else: Enum.max([max_x, elem(sensor_coordinate, 0) + manhattan])
 
     {min_x, max_x,
      [
@@ -38,8 +46,8 @@ defmodule AoC22.Day15.A do
   defp parse_coordinate(coordinate_string) do
     [["x", x], ["y", y]] =
       coordinate_string
-        |> String.split(", ")
-        |> Enum.map(&String.split(&1, "="))
+      |> String.split(", ")
+      |> Enum.map(&String.split(&1, "="))
 
     {String.to_integer(x), String.to_integer(y)}
   end
