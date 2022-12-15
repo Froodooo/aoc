@@ -11,7 +11,7 @@ defmodule AoC22.Day15.B do
       |> Enum.reduce({nil, nil, []}, &parse/2)
 
     edge_coordinates =
-      Enum.reduce(Enum.with_index(sensors), MapSet.new(), fn {sensor, index}, edge_coordinates ->
+      Enum.reduce(Enum.with_index(sensors), MapSet.new(), fn {sensor, _index}, edge_coordinates ->
         # IO.inspect(index + 1)
         edge_coordinates = elem(edge_coordinates_topright(sensor, edge_coordinates), 1)
         edge_coordinates = elem(edge_coordinates_bottomright(sensor, edge_coordinates), 1)
