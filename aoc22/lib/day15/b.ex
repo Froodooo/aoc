@@ -1,3 +1,6 @@
+@moduledoc """
+  Unfinished
+"""
 defmodule AoC22.Day15.B do
   alias AoC22.Utils
   alias AoC22.Day15.Sensor
