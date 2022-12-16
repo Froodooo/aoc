@@ -26,7 +26,8 @@ defmodule AoC22.Day15.B do
       |> MapSet.to_list()
       |> Enum.filter(fn {x, y} -> x >= 0 and y >= 0 and x <= max and y <= max end)
       |> Enum.reject(fn {x, y} -> covered_by_sensor?(sensors, x, y) end)
-      # |> IO.inspect()
+
+    # |> IO.inspect()
 
     x * 4_000_000 + y
   end
