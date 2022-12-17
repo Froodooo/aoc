@@ -4,7 +4,7 @@ defmodule AoC22.Day17.A do
   @wall_left 0
   @wall_right 8
   @wall_bottom 0
-  @rocks 2022
+  @rocks_stopped 2022
 
   def solve(input) do
     directions =
@@ -16,7 +16,7 @@ defmodule AoC22.Day17.A do
   end
 
   defp emit_jet_gas(_directions, _rocks, _shape_id, _shape, high_y, _iteration, fallen_rocks)
-       when fallen_rocks == @rocks,
+       when fallen_rocks == @rocks_stopped,
        do: high_y
 
   defp emit_jet_gas(directions, rocks, shape_id, shape, high_y, iteration, fallen_rocks) do
