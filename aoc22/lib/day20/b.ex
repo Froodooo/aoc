@@ -1,16 +1,19 @@
 defmodule AoC22.Day20.B do
   alias AoC22.Utils
 
+  @decryption_key 811_589_153
+  @iterations 10
+
   def solve(input) do
     indexed_list =
       input
       |> Utils.input()
       |> String.split("\n")
       |> Enum.map(&String.to_integer/1)
-      |> Enum.map(&(&1 * 811_589_153))
+      |> Enum.map(&(&1 * @decryption_key))
       |> Enum.with_index()
 
-    duplicated_indexed_list = indexed_list |> List.duplicate(10) |> List.flatten()
+    duplicated_indexed_list = indexed_list |> List.duplicate(@iterations) |> List.flatten()
 
     list_length = length(indexed_list)
 

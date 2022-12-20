@@ -36,7 +36,7 @@ defmodule AoC22.Day19.A do
   defp run_blueprint(_blueprint, _robots, %{geode: geode}, _maxes, 24), do: geode
 
   defp run_blueprint(blueprint, robots, materials, maxes, minutes) do
-    IO.inspect(minutes, label: "minutes")
+    # IO.inspect(minutes, label: "minutes")
 
     {updated_robots, updated_materials} =
       {robots, materials}
@@ -45,11 +45,11 @@ defmodule AoC22.Day19.A do
       |> buy_clay_robot(blueprint, materials, maxes)
       |> buy_ore_robot(blueprint, materials, maxes)
 
-    IO.inspect(updated_robots, label: "robots")
-    IO.inspect(updated_materials, label: "materials")
+    # IO.inspect(updated_robots, label: "robots")
+    # IO.inspect(updated_materials, label: "materials")
 
     mined_materials =
-      mine_materials(updated_materials, robots) |> IO.inspect(label: "mined materials")
+      mine_materials(updated_materials, robots) # |> IO.inspect(label: "mined materials")
 
     run_blueprint(blueprint, updated_robots, mined_materials, maxes, minutes + 1)
   end
