@@ -48,8 +48,8 @@ defmodule AoC22.Day19.A do
     # IO.inspect(updated_robots, label: "robots")
     # IO.inspect(updated_materials, label: "materials")
 
-    mined_materials =
-      mine_materials(updated_materials, robots) # |> IO.inspect(label: "mined materials")
+    # |> IO.inspect(label: "mined materials")
+    mined_materials = mine_materials(updated_materials, robots)
 
     run_blueprint(blueprint, updated_robots, mined_materials, maxes, minutes + 1)
   end
