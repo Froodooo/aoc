@@ -15,10 +15,10 @@ defmodule AoC22.Day21.A do
 
   defp resolve([operand1, operator, operand2], operations) do
     case operator do
-      "+" -> (resolve(operand1, operations) + resolve(operand2, operations))
-      "*" -> (resolve(operand1, operations) * resolve(operand2, operations))
-      "/" -> (resolve(operand1, operations) / resolve(operand2, operations))
-      "-" -> (resolve(operand1, operations) - resolve(operand2, operations))
+      "+" -> resolve(operand1, operations) + resolve(operand2, operations)
+      "*" -> resolve(operand1, operations) * resolve(operand2, operations)
+      "/" -> resolve(operand1, operations) / resolve(operand2, operations)
+      "-" -> resolve(operand1, operations) - resolve(operand2, operations)
     end
     |> trunc()
   end

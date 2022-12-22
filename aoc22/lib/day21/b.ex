@@ -9,8 +9,8 @@ defmodule AoC22.Day21.B do
       |> Map.new(&parse_monkey/1)
 
     operations
-      |> Map.fetch!("root")
-      |> solve(operations, 0)
+    |> Map.fetch!("root")
+    |> solve(operations, 0)
   end
 
   defp solve([operand1, _operation, operand2] = root, operations, value) do
@@ -24,10 +24,10 @@ defmodule AoC22.Day21.B do
 
   defp resolve([operand1, operator, operand2], operations) do
     case operator do
-      "+" -> (resolve(operand1, operations) + resolve(operand2, operations))
-      "*" -> (resolve(operand1, operations) * resolve(operand2, operations))
-      "/" -> (resolve(operand1, operations) / resolve(operand2, operations))
-      "-" -> (resolve(operand1, operations) - resolve(operand2, operations))
+      "+" -> resolve(operand1, operations) + resolve(operand2, operations)
+      "*" -> resolve(operand1, operations) * resolve(operand2, operations)
+      "/" -> resolve(operand1, operations) / resolve(operand2, operations)
+      "-" -> resolve(operand1, operations) - resolve(operand2, operations)
     end
     |> trunc()
   end
