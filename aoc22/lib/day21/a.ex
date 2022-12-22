@@ -2,39 +2,34 @@ defmodule AoC22.Day21.A do
   alias AoC22.Utils
 
   def solve(input) do
-    input
-    |> Utils.input()
-    |> String.split("\n")
-    |> Map.new(&parse_monkey/1)
-    |> resolve()
+    operations =
+      input
+      |> Utils.input()
+      |> String.split("\n")
+      |> Map.new(&parse_monkey/1)
 
-    :result
+    operations
+    |> Map.fetch!("root")
+    |> resolve(operations)
   end
 
-  defp resolve(monkeys) do
-    Map.new(monkeys, fn {name, operation} ->
-      resolve(monkeys, name, operation)
-    end)
+  defp resolve([operand1, operator, operand2], operations) do
+    case operator do
+      "+" -> (resolve(operand1, operations) + resolve(operand2, operations))
+      "*" -> (resolve(operand1, operations) * resolve(operand2, operations))
+      "/" -> (resolve(operand1, operations) / resolve(operand2, operations))
+      "-" -> (resolve(operand1, operations) - resolve(operand2, operations))
+    end
+    |> trunc()
   end
 
-  defp resolve(_monkeys, name, operation) when is_number(operation), do: {name, operation}
+  defp resolve(operand, _operations) when is_integer(operand), do: operand
 
-  defp resolve(monkeys, name, operation) do
-    {name,
-     operation
-     |> Enum.reduce([], fn operand, acc ->
-       cond do
-         is_number(operand) ->
-           [operand | acc]
-
-         operand in ["+", "-", "*", "/"] ->
-           [operand | acc]
-
-         is_binary(operand) ->
-           [Map.get(monkeys, operand, operand) | acc]
-       end
-     end)
-     |> Enum.reverse()}
+  defp resolve(operand, operations) when is_binary(operand) do
+    case Map.fetch!(operations, operand) do
+      [operand1, operator, operand2] -> resolve([operand1, operator, operand2], operations)
+      number -> number
+    end
   end
 
   defp parse_monkey(monkey) do
