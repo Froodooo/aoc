@@ -15,17 +15,15 @@ defmodule AoC22.Day23.A do
   end
 
   defp empty(elves) do
-    min_x = Enum.min_by(elves, &elem(&1, 0)) |> elem(0)
-    max_x = Enum.max_by(elves, &elem(&1, 0)) |> elem(0)
-    min_y = Enum.min_by(elves, &elem(&1, 1)) |> elem(1)
-    max_y = Enum.max_by(elves, &elem(&1, 1)) |> elem(1)
+    {min_x, _} = Enum.min_by(elves, &elem(&1, 0))
+    {max_x, _} = Enum.max_by(elves, &elem(&1, 0))
+    {_, min_y} = Enum.min_by(elves, &elem(&1, 1))
+    {_, max_y} = Enum.max_by(elves, &elem(&1, 1))
 
     (abs(min_x) + abs(max_x) + 1) * (abs(min_y) + abs(max_y) + 1) - Enum.count(elves)
   end
 
-  defp process(elves, _proposals, @rounds) do
-    elves
-  end
+  defp process(elves, _proposals, @rounds), do: elves
 
   defp process(elves, proposals, round) do
     proposals = round(elves, proposals, round)

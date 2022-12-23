@@ -13,7 +13,6 @@ defmodule AoC22.Day23.B do
   end
 
   defp process(elves, proposals, round) do
-    IO.inspect(round)
     proposals = round(elves, proposals, round)
 
     cond do
