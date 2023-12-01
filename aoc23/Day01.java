@@ -30,7 +30,7 @@ public class Day01 {
 
         int sum = 0;
         for (String value : calibrationValues) {
-            value = replaceLastString(replaceFirstString(value));
+            value = replaceWrittenNumbers(value);
             String[] numberValues = value.replaceAll("\\D+", "").split("");
             String firstNumber = numberValues[0];
             String lastNumber = numberValues[numberValues.length - 1];
@@ -41,41 +41,36 @@ public class Day01 {
         System.out.println(sum);
     }
 
-    private String replaceFirstString(String value) {
+    private String replaceWrittenNumbers(String value) {
         int lowestIndex = Integer.MAX_VALUE;
+        int highestIndex = Integer.MIN_VALUE;
         String firstNumber = "";
-        int replacementNumber = 0;
+        String lastNumber = "";
+        int firstReplacement = 0;
+        int lastReplacement = 0;
+
         for (int i = 0; i < WRITTEN_NUMBERS.length; i++) {
-            int index = value.indexOf(WRITTEN_NUMBERS[i]);
-            if (index != -1 && index < lowestIndex) {
-                lowestIndex = index;
+            int firstIndex = value.indexOf(WRITTEN_NUMBERS[i]);
+            if (firstIndex != -1 && firstIndex < lowestIndex) {
+                lowestIndex = firstIndex;
                 firstNumber = WRITTEN_NUMBERS[i];
-                replacementNumber = i + 1;
+                firstReplacement = i + 1;
+            }
+
+            int lastIndex = value.lastIndexOf(WRITTEN_NUMBERS[i]);
+            if (lastIndex != -1 && lastIndex > highestIndex) {
+                highestIndex = lastIndex;
+                lastNumber = WRITTEN_NUMBERS[i];
+                lastReplacement = i + 1;
             }
         }
 
         if (firstNumber != "") {
-            value = value.replace(firstNumber, Integer.toString(replacementNumber));
-        }
-
-        return value;
-    }
-
-    private String replaceLastString(String value) {
-        int highestIndex = Integer.MIN_VALUE;
-        String lastNumber = "";
-        int replacementNumber = 0;
-        for (int i = 0; i < WRITTEN_NUMBERS.length; i++) {
-            int index = value.lastIndexOf(WRITTEN_NUMBERS[i]);
-            if (index != -1 && index > highestIndex) {
-                highestIndex = index;
-                lastNumber = WRITTEN_NUMBERS[i];
-                replacementNumber = i + 1;
-            }
+            value = value.replace(firstNumber, Integer.toString(firstReplacement));
         }
 
         if (lastNumber != "") {
-            value = value.replace(lastNumber, Integer.toString(replacementNumber));
+            value = value.replace(lastNumber, Integer.toString(lastReplacement));
         }
 
         return value;
