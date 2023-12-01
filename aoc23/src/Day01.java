@@ -1,5 +1,3 @@
-package aoc23;
-
 public class Day01 {
     private static final String[] WRITTEN_NUMBERS = { "one", "two", "three", "four", "five", "six", "seven", "eight",
             "nine" };
@@ -10,7 +8,7 @@ public class Day01 {
         this.input = input;
     }
 
-    public void partA() {
+    public int partA() {
         String[] calibrationValues = Utils.separateValues(input, "\n");
 
         int sum = 0;
@@ -22,10 +20,10 @@ public class Day01 {
             sum += number;
         }
 
-        System.out.println(sum);
+        return sum;
     }
 
-    public void partB() {
+    public int partB() {
         String[] calibrationValues = Utils.separateValues(input, "\n");
 
         int sum = 0;
@@ -38,7 +36,7 @@ public class Day01 {
             sum += number;
         }
 
-        System.out.println(sum);
+        return sum;
     }
 
     private String replaceWrittenNumbers(String value) {
