@@ -10,7 +10,7 @@ public class Day01Test {
     }
 
     @Test
-    public void testG() {
+    public void testB() {
         Day01 day01 = new Day01(Utils.readFile("aoc23\\input\\01_sample2.txt"));
         assertEquals(281, day01.partB());
     }
