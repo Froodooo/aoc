@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import day04.Card;
 
@@ -25,8 +26,8 @@ public class Day04 {
 
     public int partB() {
         List<Card> cards = parseCards(input);
+        Map<Integer, Integer> allCards = new HashMap<Integer, Integer>();
 
-        HashMap<Integer, Integer> allCards = new HashMap<Integer, Integer>();
         for (int i = 1; i <= cards.size(); i++) {
             allCards.put(i, 1);
         }
@@ -41,13 +42,7 @@ public class Day04 {
                 }
             }
         }
-
-        int sum = 0;
-        for (int i = 1; i <= allCards.size(); i++) {
-            sum += allCards.get(i);
-        }
-
-        return sum;
+        return  allCards.values().stream().mapToInt(i -> i).sum();
     }
 
     private List<Card> parseCards(String input) {
