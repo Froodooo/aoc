@@ -15,9 +15,14 @@ public class App {
         // System.out.println(day03.partA());
         // System.out.println(day03.partB());
 
-        Day04 day04 = new Day04(Utils.readFile("aoc23\\input\\04.txt"));
-        System.out.println("Day 04");
-        System.out.println(day04.partA());
-        System.out.println(day04.partB());
+        // Day04 day04 = new Day04(Utils.readFile("aoc23\\input\\04.txt"));
+        // System.out.println("Day 04");
+        // System.out.println(day04.partA());
+        // System.out.println(day04.partB());
+
+        Day05 day05 = new Day05(Utils.readFile("aoc23\\input\\05.txt"));
+        System.out.println("Day 05");
+        System.out.println(day05.partA());
+        System.out.println(day05.partB());
     }
 }
