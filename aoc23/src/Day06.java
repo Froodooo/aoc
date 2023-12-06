@@ -37,10 +37,14 @@ public class Day06 {
 
     private long calculateWins(long time, long winningDistance) {
         long wins = 0;
+        boolean wasBigger = false;
         for (int i = 0; i < time; i++) {
             long distance = calculateDistance(time, i);
             if (distance > winningDistance) {
                 wins++;
+                wasBigger = true;
+            } else if (wasBigger) {
+                return wins;
             }
         }
 
