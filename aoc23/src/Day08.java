@@ -33,7 +33,7 @@ public class Day08 {
 
         List<String> currentNodes = network.keySet().stream().filter(node -> node.endsWith("A")).toList();
         List<Integer> allHops = new ArrayList<Integer>();
-        
+
         for (String currentNode : currentNodes) {
             int hops = 0;
             while (!currentNode.endsWith("Z")) {
@@ -80,7 +80,7 @@ public class Day08 {
         String[] nodes = input.split("\n\n")[1].split("\n");
         for (String node : nodes) {
             String lhs = node.split("=")[0].trim();
-            String[] rhs = node.split("=")[1].replace("(", "").replace(")", "").replace(",", "").trim().split(" ");
+            String[] rhs = node.split("=")[1].replaceAll("[(),]", "").trim().split(" ");
             network.put(lhs, rhs);
         }
 
