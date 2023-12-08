@@ -20,9 +20,7 @@ public class Day08 {
         String currentNode = START_NODE;
         int hops = 0;
         while (!currentNode.equals(FINISH_NODE)) {
-            String instruction = instructions[hops % instructions.length];
-            String[] directions = network.get(currentNode);
-            currentNode = instruction.equals("R") ? directions[1] : directions[0];
+            currentNode = getNextNode(network, instructions, currentNode, hops);
             hops++;
         }
 
@@ -34,14 +32,12 @@ public class Day08 {
         Map<String, String[]> network = getNetwork();
 
         List<String> currentNodes = network.keySet().stream().filter(node -> node.endsWith("A")).toList();
-
         List<Integer> allHops = new ArrayList<Integer>();
+        
         for (String currentNode : currentNodes) {
             int hops = 0;
             while (!currentNode.endsWith("Z")) {
-                String instruction = instructions[hops % instructions.length];
-                String[] directions = network.get(currentNode);
-                currentNode = instruction.equals("R") ? directions[1] : directions[0];
+                currentNode = getNextNode(network, instructions, currentNode, hops);
                 hops++;
             }
             allHops.add(hops);
@@ -53,6 +49,12 @@ public class Day08 {
         }
 
         return lcm;
+    }
+
+    private String getNextNode(Map<String, String[]> network, String[] instructions, String currentNode, int hops) {
+        String instruction = instructions[hops % instructions.length];
+        String[] directions = network.get(currentNode);
+        return instruction.equals("R") ? directions[1] : directions[0];
     }
 
     private long lcm(long a, long b) {
