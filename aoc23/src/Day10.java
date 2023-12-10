@@ -15,14 +15,7 @@ public class Day10 {
     public int partA() {
         Grid grid = new Grid(input);
         Tile start = grid.getStart();
-        // List<Tile> neighbours = grid.getNeighbours(start);
-        // for (Tile neighbour : neighbours) {
-        //     System.out.println(neighbour.getX() + ", " + neighbour.getY());
-        // }
         List<String> visited = grid.findRoute(start, new ArrayList<String>(Arrays.asList(start.toString())), 0);
-        // for (Tile tile : route) {
-        //     System.out.println(tile.toString());
-        // }
 
         int furthestPoint = visited.size() / 2;
 
@@ -30,19 +23,12 @@ public class Day10 {
     }
 
     public int partB() {
-         Grid grid = new Grid(input);
+        Grid grid = new Grid(input, true);
         Tile start = grid.getStart();
-        // List<Tile> neighbours = grid.getNeighbours(start);
-        // for (Tile neighbour : neighbours) {
-        //     System.out.println(neighbour.getX() + ", " + neighbour.getY());
-        // }
         List<String> visited = grid.findRoute(start, new ArrayList<String>(Arrays.asList(start.toString())), 0);
-        // for (Tile tile : route) {
-        //     System.out.println(tile.toString());
-        // }
 
-        int furthestPoint = visited.size() / 2;
+        int inside = grid.insideTiles(visited);
 
-        return furthestPoint;
+        return inside;
     }
 }

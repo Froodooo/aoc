@@ -1,8 +1,8 @@
 package day10;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import day10.Tile.Direction;
@@ -12,6 +12,10 @@ public class Grid {
     private Tile start;
 
     public Grid(String input) {
+        this(input, false);
+    }
+
+    public Grid(String input, boolean updateStart) {
         tiles = new ArrayList<List<Tile>>();
         String[] rows = input.split("\n");
         for (int y = 0; y < rows.length; y++) {
@@ -22,7 +26,48 @@ public class Grid {
             }
             tiles.add(row);
         }
-        start = findStart();
+        start = findStart(updateStart);
+    }
+
+    public int insideTiles(List<String> visited) {
+        int sum = 0;
+
+        Pattern updown = Pattern.compile("\\|");
+        Pattern F7 = Pattern.compile("(F-*7)|(7-*F)");
+        Pattern FJ = Pattern.compile("(F-*J)|(J-*F)");
+        Pattern L7 = Pattern.compile("(L-*7)|(7-*L)");
+        Pattern LJ = Pattern.compile("(L-*J)|(J-*L)");
+
+        for (int y = 0; y < tiles.size(); y++) {
+            for (int x = 0; x < tiles.get(0).size(); x++) {
+                Tile tile = tiles.get(y).get(x);
+                boolean isInside = false;
+                if (visited.contains(tile.toString())) {
+                    continue;
+                }
+
+                String edge = "";
+                for (int i = x; i < tiles.get(0).size(); i++) {
+                    Tile east = tiles.get(y).get(i);
+                    if (visited.contains(east.toString())) {
+                        edge += east.getType();
+                    }
+                    if (updown.matcher(edge).find() || FJ.matcher(edge).find() || L7.matcher(edge).find()) {
+                        isInside = !isInside;
+                        edge = "";
+                    }
+                    if (F7.matcher(edge).find() || LJ.matcher(edge).find()) {
+                        edge = "";
+                    }
+                }
+
+                if (isInside) {
+                    sum++;
+                }
+            }
+        }
+
+        return sum;
     }
 
     public Tile getStart() {
@@ -40,7 +85,6 @@ public class Grid {
 
     public List<String> findRoute(Tile start, List<String> visited, int count) {
         do {
-            // System.out.println("Start: " + start.toString());
             List<Tile> neighbours = getNeighbours(start);
             neighbours.removeIf(neighbour -> visited.contains(neighbour.toString()));
 
@@ -49,10 +93,7 @@ public class Grid {
             }
 
             Tile neighbour = neighbours.get(0);
-            // System.out.println(neighbours.size());
-            // System.out.println("Neighbour: " + neighbours.get(0).toString());
 
-            // System.out.println(visited);
             visited.add(neighbour.toString());
             start = neighbour;
         } while (!start.isStart());
@@ -100,11 +141,15 @@ public class Grid {
         return neighbours;
     }
 
-    private Tile findStart() {
+    private Tile findStart(boolean updateStart) {
         for (int y = 0; y < tiles.size(); y++) {
             for (int x = 0; x < tiles.get(0).size(); x++) {
                 Tile tile = tiles.get(y).get(x);
                 if (tile.isStart()) {
+                    if (updateStart) {
+                        // TODO: might only work for my specific input.
+                        tile.setType("F");
+                    }
                     return tile;
                 }
             }

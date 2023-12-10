@@ -84,4 +84,9 @@ public class Tile {
         final Tile other = (Tile) obj;
         return this.x == other.x && this.y == other.y;
     }
+
+    public void setType(String string) {
+        this.type = string;
+        this.connecting = setConnecting();
+    }
 }
