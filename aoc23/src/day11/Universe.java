@@ -27,7 +27,6 @@ public class Universe {
                     this.occupiedRows.add(i);
                     this.occupiedColumns.add(j);
                     this.galaxies.add(new Galaxy(id, i, j));
-                    // System.out.println(String.format("%d, %d, %d", id, i, j));
                     id++;
                 }
             }
@@ -44,7 +43,6 @@ public class Universe {
         long sum = 0;
         for (int i = 0; i < galaxies.size(); i++) {
             for (int j = i + 1; j < galaxies.size(); j++) {
-                // System.out.println(String.format("%d, %d", i, j));
                 sum += calculateDistance(galaxies.get(i), galaxies.get(j));
             }
         }
@@ -60,24 +58,11 @@ public class Universe {
         int maxColumn = Math.max(galaxy1.getColumn(), galaxy2.getColumn());
         Set<Integer> columnRange = IntStream.range(minColumn, maxColumn + 1).boxed().collect(Collectors.toSet());
 
-        // System.out.println(String.format("(%d %d %d %d)", minRow, maxRow, minColumn,
-        // maxColumn));
-        // System.out.println(rowRange.toString() + " " + columnRange.toString());
-
         rowRange.removeAll(occupiedRows);
         columnRange.removeAll(occupiedColumns);
 
-        // System.out.println(rowRange.toString() + " " + columnRange.toString());
-
         int manhattanDistance = Math.abs(maxRow - minRow) + Math.abs(maxColumn - minColumn);
-        // System.out.println(String.format("%d, %d, %d, %d", minRow, maxRow, minColumn,
-        // maxColumn));
-        // System.out.println(galaxy1.toString() + " " + galaxy2.toString() + " " +
-        // manhattanDistance);
         long totalDistance = manhattanDistance + (rowRange.size() * this.expansionFactor) + (columnRange.size() * this.expansionFactor);
-
-        // System.out.println(galaxy1.toString() + " " + galaxy2.toString() + " " +
-        // totalDistance);
 
         return totalDistance;
     }
