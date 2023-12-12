@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Day12 {
     private String input;
@@ -10,21 +11,34 @@ public class Day12 {
     public int partA() {
         int sum = 0;
         for (String line : input.split("\n")) {
-            int lineSum = lineSum(line);
+            String records = line.split(" ")[0];
+            int[] groups = Arrays.stream(line.split(" ")[1].split(","))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+            int lineSum = lineSum(records, groups);
             sum += lineSum;
         }
         return sum;
     }
 
     public int partB() {
-        return -1;
+        int sum = 0;
+        for (String line : input.split("\n")) {
+            String records = String.join("?", Collections.nCopies(5, line.split(" ")[0]));
+            int[] groups = Arrays.stream(String.join(",", Collections.nCopies(5, line.split(" ")[1]))
+                    .split(","))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+
+            System.out.println(records);
+            System.out.println(Arrays.toString(groups));
+            int lineSum = lineSum(records, groups);
+            sum += lineSum;
+        }
+        return sum;
     }
 
-    private int lineSum(String line) {
-        String records = line.split(" ")[0];
-        int[] groups = Arrays.stream(line.split(" ")[1].split(","))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+    private int lineSum(String records, int[] groups) {
 
         int totalQuestionMarks = Arrays.stream(records.split("")).filter(s -> s.equals("?")).toArray().length;
         int totalHashes = Arrays.stream(records.split("")).filter(s -> s.equals("#")).toArray().length;
