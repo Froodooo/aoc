@@ -23,14 +23,8 @@ public class Day13 {
 
     public int partB() {
         int sum = 0;
-        int patterncount = 0;
         for (String pattern : input.split("\n\n")) {
             patternLineValue(pattern);
-            // System.out.println(currentIsColumn);
-            // System.out.println(currentIsRow);
-            // System.out.println(currentLine);
-            patterncount++;
-            // System.out.println("Pattern " + patterncount);
             int lineLength = pattern.split("\n")[0].length();
             String patternLine = pattern.replace("\n", "");
             for (int i = 0; i < patternLine.length(); i++) {
@@ -38,10 +32,8 @@ public class Day13 {
                 String newPattern = patternLine.substring(0, i) + replacement + patternLine.substring(i + 1);
                 String[] newPatternArray = newPattern.split("(?<=\\G.{" + lineLength + "})");
                 String newPatternWithNewLines = String.join("\n", newPatternArray);
-                // System.out.println(newPatternWithNewLines);
                 int value = patternLineValue(newPatternWithNewLines);
                 if (value > -1) {
-                    // System.out.println("Found value: " + value);
                     sum += value;
                     break;
                 }
@@ -67,9 +59,6 @@ public class Day13 {
         int columnReflection = findColumnReflection(columns);
         int rowReflection = findRowReflection(rows);
         
-        // System.out.println("Column reflection: " + columnReflection);
-        // System.out.println("Row reflection: " + rowReflection);
-
         if (columnReflection > -1) {
             currentIsColumn = true;
             currentIsRow = false;
