@@ -87,19 +87,9 @@ public class Platform {
                     .count()
                     : rocks.stream()
                             .filter(r -> r.getRow() < rock.getRow() && r.getColumn() == rock.getColumn()).count();
-            if (blockingRocks == 0) {
-                if (blockingCubeRock.isPresent()) {
-                    rock.move(Direction.NORTH, rock.getRow() - blockingCubeRock.get().getRow() - 1);
-                } else {
-                    rock.move(Direction.NORTH, rock.getRow());
-                }
-            } else {
-                if (blockingCubeRock.isPresent()) {
-                    rock.move(Direction.NORTH, rock.getRow() - blockingCubeRock.get().getRow() - blockingRocks - 1);
-                } else {
-                    rock.move(Direction.NORTH, rock.getRow() - blockingRocks);
-                }
-            }
+
+            rock.move(Direction.NORTH, rock.getRow()
+                    - (blockingCubeRock.isPresent() ? blockingCubeRock.get().getRow() + 1 : 0) - blockingRocks);
         }
     }
 
