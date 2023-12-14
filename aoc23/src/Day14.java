@@ -10,7 +10,6 @@ public class Day14 {
     public int partA() {
         Platform platform = new Platform(input);
         platform.tilt(Platform.Direction.NORTH);
-        // System.out.println(platform.toString());
         int load = platform.calculateLoad();
         return load;
     }

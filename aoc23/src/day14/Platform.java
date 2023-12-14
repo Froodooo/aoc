@@ -2,6 +2,7 @@ package day14;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Platform {
     private int height;
@@ -69,7 +70,6 @@ public class Platform {
 
     private void tiltNorth() {
         for (Rock rock : rocks) {
-            // System.out.println(rock.toString());
             if (!rock.getType().equals("O")) {
                 continue;
             }
@@ -77,13 +77,29 @@ public class Platform {
             if (rock.getRow() == 0) {
                 continue;
             }
-            while (!rocks.stream().anyMatch(r -> hasRock(rock.getRow() - 1, rock.getColumn()))) {
-                rock.move(Direction.NORTH);
-                if (rock.getRow() == 0) {
-                    break;
+            Optional<Rock> blockingCubeRock = rocks.stream()
+                    .filter(r -> r.getType().equals("#") && r.getRow() < rock.getRow()
+                            && r.getColumn() == rock.getColumn())
+                    .min((r1, r2) -> r2.getRow() - r1.getRow());
+            long blockingRocks = blockingCubeRock.isPresent() ? rocks.stream()
+                    .filter(r -> r.getRow() > blockingCubeRock.get().getRow() && r.getRow() < rock.getRow()
+                            && r.getColumn() == rock.getColumn())
+                    .count()
+                    : rocks.stream()
+                            .filter(r -> r.getRow() < rock.getRow() && r.getColumn() == rock.getColumn()).count();
+            if (blockingRocks == 0) {
+                if (blockingCubeRock.isPresent()) {
+                    rock.move(Direction.NORTH, rock.getRow() - blockingCubeRock.get().getRow() - 1);
+                } else {
+                    rock.move(Direction.NORTH, rock.getRow());
+                }
+            } else {
+                if (blockingCubeRock.isPresent()) {
+                    rock.move(Direction.NORTH, rock.getRow() - blockingCubeRock.get().getRow() - blockingRocks - 1);
+                } else {
+                    rock.move(Direction.NORTH, rock.getRow() - blockingRocks);
                 }
             }
-            // System.out.println(rock.toString() + "\n");
         }
     }
 

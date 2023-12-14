@@ -13,10 +13,10 @@ public class Rock {
         this.column = column;
     }
 
-    public void move(Direction direction) {
+    public void move(Direction direction, long steps) {
         switch (direction) {
             case Direction.NORTH:
-                this.row--;
+                this.row -= steps;
                 break;
             default:
                 throw new IllegalArgumentException("Direction not supported");
