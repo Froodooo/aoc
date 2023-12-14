@@ -32,6 +32,16 @@ public class Platform {
         }
     }
 
+    public void rotate(Direction direction) {
+        for (Rock rock : rocks) {
+            rock.rotate(direction, width, height);
+        }
+
+        int tempHeight = this.height;
+        this.height = this.width;
+        this.width = tempHeight;
+    }
+
     public void tilt(Direction direction) {
         switch (direction) {
             case NORTH:
@@ -52,6 +62,15 @@ public class Platform {
         return sum;
     }
 
+    public void sort() {
+        rocks.sort((r1, r2) -> {
+            if (r1.getRow() == r2.getRow()) {
+                return r1.getColumn() - r2.getColumn();
+            }
+            return r1.getRow() - r2.getRow();
+        });
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < this.height; i++) {
@@ -70,6 +89,7 @@ public class Platform {
 
     private void tiltNorth() {
         for (Rock rock : rocks) {
+            // System.out.println("Before: " + rock.toString());
             if (!rock.getType().equals("O")) {
                 continue;
             }
@@ -81,15 +101,18 @@ public class Platform {
                     .filter(r -> r.getType().equals("#") && r.getRow() < rock.getRow()
                             && r.getColumn() == rock.getColumn())
                     .min((r1, r2) -> r2.getRow() - r1.getRow());
+            // System.out.println("Blocking: " + (blockingCubeRock.isPresent() ? blockingCubeRock.get().toString() : "No rock"));
             long blockingRocks = blockingCubeRock.isPresent() ? rocks.stream()
                     .filter(r -> r.getRow() > blockingCubeRock.get().getRow() && r.getRow() < rock.getRow()
                             && r.getColumn() == rock.getColumn())
                     .count()
                     : rocks.stream()
                             .filter(r -> r.getRow() < rock.getRow() && r.getColumn() == rock.getColumn()).count();
+            // System.out.println("Blocking rocks: " + blockingRocks);
 
             rock.move(Direction.NORTH, rock.getRow()
-                    - (blockingCubeRock.isPresent() ? blockingCubeRock.get().getRow() + 1 : 0) - blockingRocks);
+                    - (blockingCubeRock.isPresent() ? (blockingCubeRock.get().getRow() + 1) : 0) - blockingRocks);
+            // System.out.println("After: " + rock.toString());
         }
     }
 

@@ -23,6 +23,29 @@ public class Rock {
         }
     }
 
+    public void rotate(Direction direction, int width, int height) {
+        switch (direction) {
+            case Direction.WEST:
+                int tempRow = this.row;
+                this.row = this.column;
+                this.column = height - 1 - tempRow;
+                break;
+            case Direction.SOUTH:
+                this.row = height - 1 - this.row;
+                this.column = width - 1 - this.column;
+                break;
+            case Direction.EAST:
+                tempRow = this.row;
+                this.row = width - 1 - this.column;
+                this.column = tempRow;
+                break;
+            case Direction.NORTH:
+                throw new IllegalArgumentException("Direction not supported");
+            default:
+                throw new IllegalArgumentException("Direction not supported");
+        }
+    }
+
     public String getType() {
         return type;
     }
