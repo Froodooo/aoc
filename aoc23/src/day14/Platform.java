@@ -9,10 +9,6 @@ public class Platform {
     private int width;
     List<Rock> rocks;
 
-    public static enum Direction {
-        NORTH, SOUTH, EAST, WEST
-    }
-
     public Platform(String input) {
         this.height = input.split("\n").length;
         this.width = input.split("\n")[0].length();
@@ -32,9 +28,9 @@ public class Platform {
         }
     }
 
-    public void rotate(Direction direction) {
+    public void rotate() {
         for (Rock rock : rocks) {
-            rock.rotate(direction, width, height);
+            rock.rotate(width, height);
         }
 
         int tempHeight = this.height;
@@ -42,13 +38,28 @@ public class Platform {
         this.width = tempHeight;
     }
 
-    public void tilt(Direction direction) {
-        switch (direction) {
-            case NORTH:
-                tiltNorth();
-                break;
-            default:
-                throw new IllegalArgumentException("Direction not supported");
+    public void tilt() {
+        for (Rock rock : rocks) {
+            if (!rock.getType().equals("O")) {
+                continue;
+            }
+
+            if (rock.getRow() == 0) {
+                continue;
+            }
+            Optional<Rock> blockingCubeRock = rocks.stream()
+                    .filter(r -> r.getType().equals("#") && r.getRow() < rock.getRow()
+                            && r.getColumn() == rock.getColumn())
+                    .min((r1, r2) -> r2.getRow() - r1.getRow());
+            long blockingRocks = blockingCubeRock.isPresent() ? rocks.stream()
+                    .filter(r -> r.getRow() > blockingCubeRock.get().getRow() && r.getRow() < rock.getRow()
+                            && r.getColumn() == rock.getColumn())
+                    .count()
+                    : rocks.stream()
+                            .filter(r -> r.getRow() < rock.getRow() && r.getColumn() == rock.getColumn()).count();
+
+            rock.move(rock.getRow() - (blockingCubeRock.isPresent() ? (blockingCubeRock.get().getRow() + 1) : 0)
+                    - blockingRocks);
         }
     }
 
@@ -85,35 +96,6 @@ public class Platform {
             sb.append(row.toString() + "\n");
         }
         return sb.toString();
-    }
-
-    private void tiltNorth() {
-        for (Rock rock : rocks) {
-            // System.out.println("Before: " + rock.toString());
-            if (!rock.getType().equals("O")) {
-                continue;
-            }
-
-            if (rock.getRow() == 0) {
-                continue;
-            }
-            Optional<Rock> blockingCubeRock = rocks.stream()
-                    .filter(r -> r.getType().equals("#") && r.getRow() < rock.getRow()
-                            && r.getColumn() == rock.getColumn())
-                    .min((r1, r2) -> r2.getRow() - r1.getRow());
-            // System.out.println("Blocking: " + (blockingCubeRock.isPresent() ? blockingCubeRock.get().toString() : "No rock"));
-            long blockingRocks = blockingCubeRock.isPresent() ? rocks.stream()
-                    .filter(r -> r.getRow() > blockingCubeRock.get().getRow() && r.getRow() < rock.getRow()
-                            && r.getColumn() == rock.getColumn())
-                    .count()
-                    : rocks.stream()
-                            .filter(r -> r.getRow() < rock.getRow() && r.getColumn() == rock.getColumn()).count();
-            // System.out.println("Blocking rocks: " + blockingRocks);
-
-            rock.move(Direction.NORTH, rock.getRow()
-                    - (blockingCubeRock.isPresent() ? (blockingCubeRock.get().getRow() + 1) : 0) - blockingRocks);
-            // System.out.println("After: " + rock.toString());
-        }
     }
 
     private boolean hasRock(int row, int column) {

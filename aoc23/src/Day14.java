@@ -1,10 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import day14.Platform;
-import day14.Platform.Direction;
 
 public class Day14 {
     private String input;
@@ -15,7 +9,7 @@ public class Day14 {
 
     public int partA() {
         Platform platform = new Platform(input);
-        platform.tilt(Platform.Direction.NORTH);
+        platform.tilt();
         int load = platform.calculateLoad();
         return load;
     }
@@ -24,12 +18,10 @@ public class Day14 {
         Platform platform = new Platform(input);
         for (int j = 0; j < 1000; j++) {
             for (int i = 0; i < 4; i++) {
-                platform.tilt(Platform.Direction.NORTH);
-                platform.rotate(Direction.WEST);
+                platform.tilt();
+                platform.rotate();
                 platform.sort();
             }
-            // System.out.println(platform.calculateLoad());
-
         }
 
         // Manual calculation:
