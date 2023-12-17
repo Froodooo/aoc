@@ -1,9 +1,7 @@
 package day17;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -23,6 +21,11 @@ public class Map {
             this.distance = distance;
             this.direction = direction;
             this.directionCount = directionCount;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return this.distance - o.distance;
         }
     }
 
@@ -46,7 +49,7 @@ public class Map {
 
         Set<Node> visited = new HashSet<Node>();
 
-        PriorityQueue<Node> queue = new PriorityQueue<Node>(Comparator.comparingInt(n -> n.distance));
+        PriorityQueue<Node> queue = new PriorityQueue<Node>();
         queue.add(new Node(0, 0, 0, 0, 0));
 
         while (!queue.isEmpty()) {
