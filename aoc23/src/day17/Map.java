@@ -1,9 +1,12 @@
 package day17;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
+
+import day10.Tile.Direction;
 
 public class Map {
     private int[][] grid;
@@ -62,10 +65,12 @@ public class Map {
         // }
         // distances[0][0] = 0;
 
-        Set<Node> visited = new HashSet<Node>();
+        // Set<Node> visited = new HashSet<Node>();
+        boolean[][][][] visited = new boolean[grid.length][grid[0].length][Direction.values().length][4];
 
-        PriorityQueue<Node> queue = new PriorityQueue<Node>();
-        queue.add(new Node(0, 0, 0, -1, -1));
+        PriorityQueue<Node> queue = new PriorityQueue<Node>(Comparator.comparingInt(o -> o.distance));
+        queue.add(new Node(0, 0, 0, 0, 0));
+        queue.add(new Node(0, 0, 0, 1, 0));
 
         while (!queue.isEmpty()) {
             // System.out.println("=====");
@@ -74,11 +79,11 @@ public class Map {
             // System.out.println(current.y + " " + current.x + " " + current.distance + " "
             // + current.direction + " " + current.directionCount);
 
-            if (visited.contains(current)) {
+            if (visited[current.y][current.x][current.direction][current.directionCount]) {
                 continue;
             }
 
-            visited.add(current);
+            visited[current.y][current.x][current.direction][current.directionCount] = true;
 
             if (current.y == grid.length - 1 && current.x == grid[0].length - 1) {
                 return current.distance;
