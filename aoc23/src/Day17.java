@@ -11,8 +11,7 @@ public class Day17 {
     public int partA() {
         Map map = new Map(input);
         System.out.println(map.toString());
-        System.out.println(map.dijkstra());
-        return -1;
+        return map.dijkstra();
     }
 
     public int partB() {

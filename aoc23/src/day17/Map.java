@@ -1,12 +1,7 @@
 package day17;
 
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.Set;
-
-import day10.Tile.Direction;
 
 public class Map {
     private int[][] grid;
@@ -59,25 +54,13 @@ public class Map {
     }
 
     public int dijkstra() {
-        // int[][] distances = new int[grid.length][grid[0].length];
-        // for (int y = 0; y < distances.length; y++) {
-        //     Arrays.fill(distances[y], Integer.MAX_VALUE);
-        // }
-        // distances[0][0] = 0;
-
-        // Set<Node> visited = new HashSet<Node>();
-        boolean[][][][] visited = new boolean[grid.length][grid[0].length][Direction.values().length][4];
+        boolean[][][][] visited = new boolean[grid.length][grid[0].length][4][4];
 
         PriorityQueue<Node> queue = new PriorityQueue<Node>(Comparator.comparingInt(o -> o.distance));
         queue.add(new Node(0, 0, 0, 0, 0));
-        queue.add(new Node(0, 0, 0, 1, 0));
 
         while (!queue.isEmpty()) {
-            // System.out.println("=====");
-            // System.out.println(queue.element());
             Node current = queue.poll();
-            // System.out.println(current.y + " " + current.x + " " + current.distance + " "
-            // + current.direction + " " + current.directionCount);
 
             if (visited[current.y][current.x][current.direction][current.directionCount]) {
                 continue;
@@ -101,10 +84,6 @@ public class Map {
                     continue;
                 }
 
-                // if (visited[newY][newX]) {
-                // continue;
-                // }
-
                 if (newDirectionCount > 3) {
                     continue;
                 }
@@ -114,13 +93,8 @@ public class Map {
                 }
 
                 int newDistance = current.distance + grid[newY][newX];
-                // if (newDistance < distances[newY][newX]) {
-                    // distances[newY][newX] = newDistance;
-                    Node newNode = new Node(newX, newY, newDistance, newDirection, newDirectionCount);
-                    queue.add(newNode);
-                    // System.out.println("Added " + newNode);
-                    // System.out.println(queue.element());
-                // }
+                Node newNode = new Node(newX, newY, newDistance, newDirection, newDirectionCount);
+                queue.add(newNode);
             }
         }
 
