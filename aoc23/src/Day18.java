@@ -1,3 +1,5 @@
+import day18.Terrain;
+
 public class Day18 {
     private String input;
 
@@ -6,11 +8,13 @@ public class Day18 {
 
     }
 
-    public int partA() {
-        return -1;
+    public long partA() {
+        Terrain terrain = new Terrain(input);
+        return terrain.calculateCubicMeters();
     }
 
-    public int partB() {
-        return -1;
+    public long partB() {
+        Terrain terrain = new Terrain(input, true);
+        return terrain.calculateCubicMeters();
     }
 }
