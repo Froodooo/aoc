@@ -34,7 +34,7 @@ public class Rating {
         for (Category category : categories) {
             score += category.getValue();
         }
-        
+
         return score;
     }
 
