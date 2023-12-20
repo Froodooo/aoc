@@ -24,9 +24,6 @@ public class Day20 {
 
     public int partA() {
         Map<String, Module> modules = parseInput(input);
-        // for (String module : modules.keySet()) {
-        // System.out.println(module);
-        // }
         Queue<Message> queue = new ArrayDeque<Message>();
 
         int lowPulses = 0;
@@ -36,11 +33,6 @@ public class Day20 {
             queue.add(new Message(Pulse.LOW, "start", "broadcaster"));
 
             while (!queue.isEmpty()) {
-                // for (Message m : queue) {
-                //     System.out.println(m.toString());
-                // }
-                // System.out.println("\n");
-
                 Message message = queue.poll();
                 if (message.getPulse() == Pulse.LOW) {
                     lowPulses++;
@@ -59,47 +51,75 @@ public class Day20 {
         return lowPulses * highPulses;
     }
 
-    public int partB() {
+    public long partB() {
         Map<String, Module> modules = parseInput(input);
-        // for (String module : modules.keySet()) {
-        // System.out.println(module);
-        // }
         Queue<Message> queue = new ArrayDeque<Message>();
 
-        int lowPulses = 0;
-        int highPulses = 0;
+        // If all of the following modules are low,
+        // a high signal is sent to module qb,
+        // which in turn sends a low signal to rx.
+        // The modules below are probably different for other people.
+        long kv = -1;
+        long jg = -1;
+        long rz = -1;
+        long mr = -1;
 
-        boolean rxReceivedLow = false;
+        long count = 0;
 
-        while (!rxReceivedLow) {
+        while (kv == -1 || jg == -1 || rz == -1 || mr == -1) {
             queue.add(new Message(Pulse.LOW, "start", "broadcaster"));
 
             while (!queue.isEmpty()) {
-                // for (Message m : queue) {
-                //     System.out.println(m.toString());
-                // }
-                // System.out.println("\n");
-
                 Message message = queue.poll();
-                if (message.getReceiver().equals("rx") && message.getPulse() == Pulse.HIGH) {
-                    rxReceivedLow = true;
+                if (message.getReceiver().equals("kv") && message.getPulse() == Pulse.LOW && kv < 0) {
+                    kv = 0;
                 }
-
-                if (message.getPulse() == Pulse.LOW) {
-                    lowPulses++;
-                } else {
-                    highPulses++;
+                if (message.getReceiver().equals("jg") && message.getPulse() == Pulse.LOW && jg < 0) {
+                    jg = 0;
+                }
+                if (message.getReceiver().equals("rz") && message.getPulse() == Pulse.LOW && rz < 0) {
+                    rz = 0;
+                }
+                if (message.getReceiver().equals("mr") && message.getPulse() == Pulse.LOW && mr < 0) {
+                    mr = 0;
                 }
                 Module module = modules.get(message.getReceiver());
                 List<Message> newMessages = module.handleMessage(message);
                 queue.addAll(newMessages);
             }
+
+            count++;
+
+            if (kv == 0) {
+                kv = count;
+            }
+            if (jg == 0) {
+                jg = count;
+            }
+            if (rz == 0) {
+                rz = count;
+            }
+            if (mr == 0) {
+                mr = count;
+            }
         }
 
-        System.out.println("lowPulses: " + lowPulses);
-        System.out.println("highPulses: " + highPulses);
+        return lcm(kv, lcm(jg, lcm(rz, mr)));
+    }
 
-        return lowPulses * highPulses;
+    private long lcm(long number1, long number2) {
+        if (number1 == 0 || number2 == 0) {
+            return 0;
+        }
+        long absNumber1 = Math.abs(number1);
+        long absNumber2 = Math.abs(number2);
+        long absHigherNumber = Math.max(absNumber1, absNumber2);
+        long absLowerNumber = Math.min(absNumber1, absNumber2);
+        long lcm = absHigherNumber;
+        while (lcm % absLowerNumber != 0) {
+            lcm += absHigherNumber;
+        }
+        return lcm;
     }
 
     private Map<String, Module> parseInput(String input) {
@@ -115,18 +135,6 @@ public class Day20 {
             updateModuleNames(moduleNames, sender, receivers);
             updateIn(in, sender, receivers);
             updateOut(out, sender, receivers);
-        }
-
-        // for (String sender : in.keySet()) {
-        // System.out.println(sender + " -> " + in.get(sender));
-        // }
-
-        // for (String sender : out.keySet()) {
-        // System.out.println(sender + " -> " + out.get(sender));
-        // }
-
-        for (String name : moduleNames) {
-        System.out.println(name);
         }
 
         for (String sender : moduleNames) {
@@ -145,23 +153,10 @@ public class Day20 {
             }
         }
 
-        // for (Module module : modules.values()) {
-        // System.out.println(module.toString());
-        // }
-
-        // for (String module : modules.keySet()) {
-        // System.out.println(module);
-        // }
-
         return modules;
     }
 
     private void updateModuleNames(Set<String> moduleNames, String sender, String[] receivers) {
-        // System.out.println(sender);
-        // System.out.println(Arrays.toString(receivers));
-        // System.out.println(moduleNames);
-        // System.out.println("\n");
-
         if (moduleNames.contains(sender.replaceAll("[&%]", "")) && !sender.equals("broadcaster")) {
             moduleNames.remove(sender.replaceAll("[&%]", ""));
             moduleNames.add(sender);
@@ -171,7 +166,6 @@ public class Day20 {
 
         for (String receiver : receivers) {
             if (moduleNames.contains(receiver.replaceAll("[&%]", ""))) {
-                // System.out.println("contains");
                 moduleNames.remove(receiver.replaceAll("[&%]", ""));
                 moduleNames.add(receiver);
             } else if (!moduleNames.contains("%" + receiver) && !moduleNames.contains("&" + receiver)) {
