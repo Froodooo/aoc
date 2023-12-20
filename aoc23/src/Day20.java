@@ -45,9 +45,6 @@ public class Day20 {
             }
         }
 
-        System.out.println("lowPulses: " + lowPulses);
-        System.out.println("highPulses: " + highPulses);
-
         return lowPulses * highPulses;
     }
 
