@@ -107,6 +107,7 @@ public class Day20 {
         return lcm(kv, lcm(jg, lcm(rz, mr)));
     }
 
+    // https://www.baeldung.com/java-least-common-multiple
     private long lcm(long number1, long number2) {
         if (number1 == 0 || number2 == 0) {
             return 0;
