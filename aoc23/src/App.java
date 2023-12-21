@@ -1,7 +1,7 @@
 public class App {
     public static void main(String[] args) throws Exception {
-        Day20 day20 = new Day20(Utils.readFile("aoc23\\input\\20.txt"));
-        // System.out.println(day20.partA());
-        System.out.println(day20.partB());
+        Day21 day21 = new Day21(Utils.readFile("aoc23\\input\\21.txt"));
+        System.out.println(day21.partA());
+        // System.out.println(day21.partB());
     }
 }
