@@ -9,12 +9,15 @@ public class Day21 {
 
     public int partA() {
         Garden garden = new Garden(input);
-        int reachable = garden.reachablePlots(64);
-        // System.out.println(garden.toString());
+        int reachable = garden.reachablePlots(64, false);
+        System.out.println(garden.toString());
         return reachable;
     }
 
     public long partB() {
-        return -1;
+                Garden garden = new Garden(input);
+        int reachable = garden.reachablePlots(10, true);
+        // System.out.println(garden.toString());
+        return reachable;
     }
 }

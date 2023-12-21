@@ -9,12 +9,18 @@ import java.util.Set;
 
 public class Garden {
     String[][] plots;
+
+    private int height;
+    private int width;
+
     private int startX;
     private int startY;
 
     public Garden(String input) {
         String[] lines = input.split("\n");
         plots = new String[lines.length][lines[0].length()];
+        height = lines.length;
+        width = lines[0].length();
 
         for (int i = 0; i < lines.length; i++) {
             String[] line = lines[i].split("");
@@ -28,9 +34,11 @@ public class Garden {
         }
     }
 
-    public int reachablePlots(int steps) {
+    public int reachablePlots(int steps, boolean infinite) {
         Queue<Plot> queue = new ArrayDeque<Plot>();
         queue.add(new Plot(startX, startY));
+
+        Set<String> reachable = new HashSet<String>();
 
         while (!queue.isEmpty()) {
             Plot point = queue.poll();
@@ -39,14 +47,14 @@ public class Garden {
                 continue;
             }
 
-            List<Plot> neighbours = neighbours(point, steps);
+            List<Plot> neighbours = neighbours(point, steps, reachable, infinite);
             queue.addAll(neighbours);
         }
 
-        return countReachable() + 1;
+        return reachable.size() + 1;
     }
 
-    private List<Plot> neighbours(Plot plot, int steps) {
+    private List<Plot> neighbours(Plot plot, int steps, Set<String> reachable, boolean infinite) {
         int[] dx = new int[] { 0, 1, 0, -1 };
         int[] dy = new int[] { 1, 0, -1, 0 };
 
@@ -56,14 +64,40 @@ public class Garden {
             int x = plot.x + dx[i];
             int y = plot.y + dy[i];
             Plot newPlot = new Plot(x, y, plot.getSteps() + 1);
-            if (x >= 0 && x < plots[0].length && y >= 0 && y < plots.length && plots[y][x].equals(".")) {
+            if (isValid(x, y, reachable, infinite)) {
                 neighbours.add(newPlot);
                 if (newPlot.getSteps() % 2 == 0) {
-                    plots[y][x] = "O";
+                    reachable.add(newPlot.toString());
+                    // plots[y][x] = "O";
                 }
             }
         }
         return neighbours;
+    }
+
+    private boolean isValid(int x, int y, Set<String> reachable, boolean infinite) {
+        if (!infinite) {
+            return x >= 0 && x < plots[0].length && y >= 0 && y < plots.length && plots[y][x].equals(".") && !reachable.contains(new Plot(x, y).toString());
+        }
+
+        if (plots[y][x].equals("O")) {
+            return false;
+        }
+
+        if (x >= 0 && y >= 0) {
+            return  plots[y % height][x % width].equals(".");
+        }
+        if (x < 0 && y >= 0) {
+            return plots[y % height][(x % width) + width].equals(".");
+        }
+        if (x >= 0 && y < 0) {
+            return plots[(y % height) + height][x % width].equals(".");
+        }
+        if (x < 0 && y < 0) {
+            return plots[(y % height) + height][(x % width) + width].equals(".");
+        }
+
+        return false;
     }
 
     private int countReachable() {
