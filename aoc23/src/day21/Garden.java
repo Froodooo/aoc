@@ -16,6 +16,8 @@ public class Garden {
     private int startX;
     private int startY;
 
+    Set<String> reachable = new HashSet<String>();
+
     public Garden(String input) {
         String[] lines = input.split("\n");
         plots = new String[lines.length][lines[0].length()];
@@ -38,8 +40,6 @@ public class Garden {
         Queue<Plot> queue = new ArrayDeque<Plot>();
         queue.add(new Plot(startX, startY));
 
-        Set<String> reachable = new HashSet<String>();
-
         while (!queue.isEmpty()) {
             Plot point = queue.poll();
 
@@ -47,14 +47,14 @@ public class Garden {
                 continue;
             }
 
-            List<Plot> neighbours = neighbours(point, steps, reachable, infinite);
+            List<Plot> neighbours = neighbours(point, steps, infinite);
             queue.addAll(neighbours);
         }
 
         return reachable.size() + 1;
     }
 
-    private List<Plot> neighbours(Plot plot, int steps, Set<String> reachable, boolean infinite) {
+    private List<Plot> neighbours(Plot plot, int steps, boolean infinite) {
         int[] dx = new int[] { 0, 1, 0, -1 };
         int[] dy = new int[] { 1, 0, -1, 0 };
 
@@ -64,7 +64,7 @@ public class Garden {
             int x = plot.x + dx[i];
             int y = plot.y + dy[i];
             Plot newPlot = new Plot(x, y, plot.getSteps() + 1);
-            if (isValid(x, y, reachable, infinite)) {
+            if (isValid(x, y, infinite)) {
                 neighbours.add(newPlot);
                 if (newPlot.getSteps() % 2 == 0) {
                     reachable.add(newPlot.toString());
@@ -75,41 +75,42 @@ public class Garden {
         return neighbours;
     }
 
-    private boolean isValid(int x, int y, Set<String> reachable, boolean infinite) {
+    private boolean isValid(int x, int y, boolean infinite) {
         if (!infinite) {
-            return x >= 0 && x < plots[0].length && y >= 0 && y < plots.length && plots[y][x].equals(".") && !reachable.contains(new Plot(x, y).toString());
+            return x >= 0 && x < plots[0].length && y >= 0 && y < plots.length && plots[y][x].equals(".")
+                    && !reachable.contains(new Plot(x, y).toString());
         }
 
-        if (plots[y][x].equals("O")) {
+        // if (plots[y][x].equals("O")) {
+        // return false;
+        // }
+
+        if (reachable.contains(new Plot(x, y).toString())) {
             return false;
         }
 
         if (x >= 0 && y >= 0) {
-            return  plots[y % height][x % width].equals(".");
+            int dx = x % width;
+            int dy = y % height;
+            return plots[dy][dx].equals(".");
         }
         if (x < 0 && y >= 0) {
-            return plots[y % height][(x % width) + width].equals(".");
+            int dx = x % width == 0 ? 0 : (x % width) + width;
+            int dy = y % height;
+            return plots[dy][dx].equals(".");
         }
         if (x >= 0 && y < 0) {
-            return plots[(y % height) + height][x % width].equals(".");
+            int dx = x % width;
+            int dy = y % height == 0 ? 0 : (y % height) + height;
+            return plots[dy][dx].equals(".");
         }
         if (x < 0 && y < 0) {
-            return plots[(y % height) + height][(x % width) + width].equals(".");
+            int dx = x % width == 0 ? 0 : (x % width) + width;
+            int dy = y % height == 0 ? 0 : (y % height) + height;
+            return plots[dy][dx].equals(".");
         }
 
-        return false;
-    }
-
-    private int countReachable() {
-        int count = 0;
-        for (String[] row : plots) {
-            for (String plot : row) {
-                if (plot.equals("O")) {
-                    count++;
-                }
-            }
-        }
-        return count;
+        throw new RuntimeException("Invalid coordinates");
     }
 
     public int getStartX() {
@@ -123,9 +124,9 @@ public class Garden {
     public String toString() {
         String result = "";
 
-        for (String[] row : plots) {
-            for (String plot : row) {
-                result += plot;
+        for (int y = 0; y < plots.length; y++) {
+            for (int x = 0; x < plots[0].length; x++) {
+                result += reachable.contains(new Plot(x, y).toString()) ? "O" : plots[y][x];
             }
             result += "\n";
         }

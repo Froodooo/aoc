@@ -15,9 +15,9 @@ public class Day21 {
     }
 
     public long partB() {
-                Garden garden = new Garden(input);
-        int reachable = garden.reachablePlots(10, true);
-        // System.out.println(garden.toString());
+        Garden garden = new Garden(input);
+        int reachable = garden.reachablePlots(129, false);
+        System.out.println(garden.toString());
         return reachable;
     }
 }
