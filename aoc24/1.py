@@ -22,8 +22,11 @@ def part_one():
 
 def part_two():
   sum = 0
+  seen = {}
   for number in list_left:
-    sum += number * list_right.count(number)
+    if number not in seen:
+      seen[number] = number * list_right.count(number)
+    sum += seen[number]
   
   print(sum)
 
