@@ -1,5 +1,9 @@
 from utils import *
 
+def is_safe(numbers):
+  increasing = all(i < j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
+  decreasing = all(i > j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
+  return increasing or decreasing
 
 def part_one(path):
   lines = read_to_list(path)
@@ -7,9 +11,7 @@ def part_one(path):
 
   for line in lines:
     numbers = [int(number) for number in line.split()]
-    increasing = all(i < j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
-    decreasing = all(i > j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
-    safe += 1 if (increasing or decreasing) else 0
+    safe += 1 if is_safe(numbers) else 0
 
   return safe
 
@@ -19,24 +21,14 @@ def part_two(path):
 
   for line in lines:
     numbers = [int(number) for number in line.split()]
-    increasing = all(i < j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
-    if increasing:
-      safe += 1
-      continue
-    decreasing = all(i > j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
-    if decreasing:
+    if (is_safe(numbers)):
       safe += 1
       continue
     
     for i in range(len(numbers)):
       new_numbers = numbers.copy()
       new_numbers.pop(i)
-      increasing = all(i < j and abs(i - j) <= 3 for i, j in zip(new_numbers, new_numbers[1:]))
-      if increasing:
-        safe += 1
-        break
-      decreasing = all(i > j and abs(i - j) <= 3 for i, j in zip(new_numbers, new_numbers[1:]))
-      if decreasing:
+      if (is_safe(new_numbers)):
         safe += 1
         break
 
