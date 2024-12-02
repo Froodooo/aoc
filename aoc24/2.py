@@ -1,9 +1,18 @@
 from utils import *
 
+INPUT_FILE = "./2.in"
+SAMPLE_FILE = "./2.sample"
+
+MAX_GAP = 3
+
+def is_safe_increasing(numbers, max_gap):
+  return all(i < j and abs(i - j) <= max_gap for i, j in zip(numbers, numbers[1:]))
+
+def is_safe_decreasing(numbers, max_gap):
+  return all(i > j and abs(i - j) <= max_gap for i, j in zip(numbers, numbers[1:]))
+
 def is_safe(numbers):
-  increasing = all(i < j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
-  decreasing = all(i > j and abs(i - j) <= 3 for i, j in zip(numbers, numbers[1:]))
-  return increasing or decreasing
+  return True if is_safe_increasing(numbers, MAX_GAP) else is_safe_decreasing(numbers, MAX_GAP)
 
 def part_one(path):
   lines = read_to_list(path)
@@ -34,13 +43,13 @@ def part_two(path):
 
   return safe
 
-assert part_one("./2.sample") == 2
-assert part_two("./2.sample") == 4
+assert part_one(SAMPLE_FILE) == 2
+assert part_two(SAMPLE_FILE) == 4
 
-assert part_one("./2.in") == 359
-assert part_two("./2.in") == 418
+assert part_one(INPUT_FILE) == 359
+assert part_two(INPUT_FILE) == 418
 
-path = "./2.in"
+path = INPUT_FILE
 result_one = part_one(path)
 result_two = part_two(path)
 print(result_one, result_two)
