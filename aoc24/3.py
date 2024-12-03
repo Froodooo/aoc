@@ -19,21 +19,19 @@ def part_one(path):
 def part_two(path):
   input = read_to_line(path)
 
-  mul_pattern = re.compile(r'(mul\((\d{1,3}),(\d{1,3})\))|(don\'t\(\))|(do\(\))')
+  mul_pattern = re.compile(r'mul\((\d{1,3}),(\d{1,3})\)|don\'t\(\)|do\(\)')
   matches = re.finditer(mul_pattern, input)
 
   enabled = True
   sum = 0
   for match in matches:
-    if match.group(4):
+    if match.group(0) == "don't()":
       enabled = False
-      continue
-    if match.group(5):
+    elif match.group(0) == "do()":
       enabled = True
-      continue
-    
-    if enabled:
-      sum += int(match.group(2)) * int(match.group(3))
+    else:
+      if enabled:
+        sum += int(match.group(1)) * int(match.group(2))
 
   return sum
 
