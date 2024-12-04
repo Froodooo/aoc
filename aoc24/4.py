@@ -12,24 +12,28 @@ def count_diagonal(matrix):
   word_count = 0
   for i in range(len(matrix)):
     for j in range(len(matrix[i])):
+      # down right
       if i + len(WORD) <= len(matrix) and j + len(WORD) <= len(matrix[i]):
         word = []
         for k in range(len(WORD)):
           word.append(matrix[i+k][j+k])
         if word == WORD:
           word_count += 1
+      # up left
       if i - len(WORD) >= -1 and j - len(WORD) >= -1:
         word = []
         for k in range(len(WORD)):
           word.append(matrix[i-k][j-k])
         if word == WORD:
           word_count += 1
+      # down left
       if i + len(WORD) <= len(matrix) and j - len(WORD) >= -1:
         word = []
         for k in range(len(WORD)):
           word.append(matrix[i+k][j-k])
         if word == WORD:
           word_count += 1
+      # up right
       if i - len(WORD) >= -1 and j + len(WORD) <= len(matrix[i]):
         word = []
         for k in range(len(WORD)):
