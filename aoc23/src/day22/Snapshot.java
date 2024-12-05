@@ -2,7 +2,9 @@ package day22;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Snapshot {
     List<Brick> bricks;
@@ -15,10 +17,32 @@ public class Snapshot {
         Collections.sort(bricks);
     }
 
-    public void fall() {
-        boolean changed = false;
-        do {
-        } while (changed);
+    public void drop() {
+        List<Brick> droppedBricks = new ArrayList<>();
+        Map<Integer, Integer> xMap = new HashMap<>();
+        Map<Integer, Integer> yMap = new HashMap<>();
+        
+        for (Brick brick : bricks) {
+            int highestX = 0;
+            for (int x = brick.xMin; x <= brick.xMax; x++) {
+                if (xMap.containsKey(x)) {
+                    highestX = Math.max(highestX, xMap.get(x));
+                } else {
+                    xMap.put(x, brick.zMax);
+                }
+            }
+            int highestY = 0;
+            for (int y = brick.yMin; y <= brick.yMax; y++) {
+                if (yMap.containsKey(y)) {
+                    highestY = Math.max(highestY, yMap.get(y));
+                } else {
+                    yMap.put(y, brick.zMax);
+                }
+            }
+
+            
+        }
+
     }
 
     public String toString() {

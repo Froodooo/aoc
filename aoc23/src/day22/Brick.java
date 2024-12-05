@@ -28,20 +28,6 @@ public class Brick implements Comparable<Brick> {
 
     @Override
     public int compareTo(Brick o) {
-        if (this.zMin != o.zMin) {
-            return Integer.compare(this.zMin, o.zMin);
-        } else if (this.zMax != o.zMax) {
-            return Integer.compare(this.zMax, o.zMax);
-        } else if (this.yMin != o.yMin) {
-            return Integer.compare(this.yMin, o.yMin);
-        } else if (this.yMax != o.yMax) {
-            return Integer.compare(this.yMax, o.yMax);
-        } else if (this.xMin != o.xMin) {
-            return Integer.compare(this.xMin, o.xMin);
-        } else if (this.xMax != o.xMax) {
-            return Integer.compare(this.xMax, o.xMax);
-        } else {
-            return 0;
-        }
+        return Integer.compare(this.zMin, o.zMin);
     }
 }
