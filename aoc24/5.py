@@ -4,16 +4,23 @@ from functools import cmp_to_key
 INPUT_FILE = "./5.in"
 SAMPLE_FILE = "./5.sample"
 
-def setup(path):
-    ordering_rules, updates = read_to_string(path).split("\n\n")
-    ordering_rules = list(map(lambda x: [int(y) for y in x.split("|")], ordering_rules.splitlines()))
+def setup_dict(ordering_rules_input):
+    ordering_rules = list(map(lambda x: [int(y) for y in x.split("|")], ordering_rules_input.splitlines()))
     ordering_rules_dict = {}
     for rule in ordering_rules:
         if rule[0] not in ordering_rules_dict:
             ordering_rules_dict[rule[0]] = []
         ordering_rules_dict[rule[0]].append(rule[1])
-    updates = [list(map(int, x.split(','))) for x in updates.splitlines()]
-    return updates, ordering_rules_dict
+    return ordering_rules_dict
+
+def setup_updates(updates_input):
+    return [list(map(int, x.split(','))) for x in updates_input.splitlines()]
+
+def setup(path):
+    ordering_rules_input, updates_input = read_to_string(path).split("\n\n")
+    ordering_rules = setup_dict(ordering_rules_input)
+    updates = setup_updates(updates_input)
+    return updates, ordering_rules
 
 def is_valid_update(update, ordering_rules_dict):
     for i, page in enumerate(update):
