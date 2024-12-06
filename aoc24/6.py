@@ -17,6 +17,13 @@ turn = {
   'R': 'D'
 }
 
+obstacle = {
+  'U': 'L',
+  'D': 'R',
+  'L': 'D',
+  'R': 'U'
+}
+
 def get_start(map):
   for i in range(len(map)):
       for j in range(len(map[i])):
