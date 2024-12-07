@@ -5,12 +5,11 @@ INPUT_FILE = "./7.in"
 SAMPLE_FILE = "./7.sample"
 
 def read_input(path):
-  input = [x.split(": ") for x in read_to_list(path)]
-  input = [[int(x[0]), [int(y) for y in x[1].split()]] for x in input]
-  return input
+  return [[int(x[0]), list(map(int, x[1].split()))] for x in (line.split(": ") for line in read_to_list(path))]
 
 def calculate_operator_sequence_result(operator_sequence, equation, test_value):
   test_result = equation[0]
+
   for i, operator in enumerate(operator_sequence):
     if operator == '+':
       test_result += equation[i+1]
@@ -20,12 +19,14 @@ def calculate_operator_sequence_result(operator_sequence, equation, test_value):
       test_result = int(f"{test_result}{equation[i+1]}")
     if test_result > test_value:
       break
+
   return test_result
 
 def calculate_calibrated_result(input, operators):
   calibration_result = 0
+
   for test_value, equation in input:
-    operator_sequences = [list(seq) for seq in product(operators, repeat=(len(equation))-1)]
+    operator_sequences = [list(sequence) for sequence in product(operators, repeat=(len(equation))-1)]
     for operator_sequence in operator_sequences:
       test_result = calculate_operator_sequence_result(operator_sequence, equation, test_value)
       if test_result == test_value:
@@ -35,12 +36,10 @@ def calculate_calibrated_result(input, operators):
   return calibration_result
 
 def part_one(path):
-  input = read_input(path)
-  return calculate_calibrated_result(input, "*+")
+  return calculate_calibrated_result(read_input(path), "*+")
 
 def part_two(path):
-  input = read_input(path)
-  return calculate_calibrated_result(input, "*+|")
+  return calculate_calibrated_result(read_input(path), "*+|")
 
 
 assert part_one(SAMPLE_FILE) == 3749
