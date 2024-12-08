@@ -71,4 +71,4 @@ assert part_two(INPUT_FILE) == 1235
 path = INPUT_FILE
 result_one = part_one(path)
 result_two = part_two(path)
-print(result_one, result_one)
+print(result_one, result_two)
