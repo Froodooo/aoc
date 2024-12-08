@@ -21,12 +21,14 @@ def get_antinodes(antenna1, antenna2, rooftop, resonant=False):
   resonance_level = 1
   resume = True
   antinodes = set()
+
   if resonant:
     antinodes.add(antenna1)
     antinodes.add(antenna2)
 
   while resume:
     antinodes_length = len(antinodes)
+    
     (a1y, a1x) = ((y1 + ((y1 - y2) * resonance_level)), (x1 + ((x1 - x2) * resonance_level)))
     (a2y, a2x) = ((y2 + ((y2 - y1) * resonance_level)), (x2 + ((x2 - x1) * resonance_level)))
     
