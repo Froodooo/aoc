@@ -40,27 +40,26 @@ def get_antinodes(antenna1, antenna2, rooftop, resonant=False):
 
   return antinodes
 
+def get_all_antinodes(rooftop, antennas, resonant=False):
+  antinodes = set()
+  for positions in antennas.values():
+    pairs = [(a, b) for idx, a in enumerate(positions) for b in positions[idx + 1:]]
+    for (antenna1, antenna2) in pairs:
+      antinodes = antinodes.union(get_antinodes(antenna1, antenna2, rooftop, resonant))
+  return antinodes
+
 def part_one(path):
   rooftop = [list(x) for x in read_to_list(path)]
   antennas = get_antennas(rooftop)
-  antinodes = set()
-  for _frequency, positions in antennas.items():
-    # print(len(positions))
-    pairs = [(a, b) for idx, a in enumerate(positions) for b in positions[idx + 1:]]
-    for (antenna1, antenna2) in pairs:
-      antinodes = antinodes.union(get_antinodes(antenna1, antenna2, rooftop, False))
+  antinodes = get_all_antinodes(rooftop, antennas)
   return len(antinodes)
 
 def part_two(path):
   rooftop = [list(x) for x in read_to_list(path)]
   antennas = get_antennas(rooftop)
-  antinodes = set()
-  for _frequency, positions in antennas.items():
-    # print(len(positions))
-    pairs = [(a, b) for idx, a in enumerate(positions) for b in positions[idx + 1:]]
-    for (antenna1, antenna2) in pairs:
-      antinodes = antinodes.union(get_antinodes(antenna1, antenna2, rooftop, True))
+  antinodes = get_all_antinodes(rooftop, antennas, True)
   return len(antinodes)
+
 
 assert part_one(SAMPLE_FILE) == 14
 assert part_two(SAMPLE_FILE) == 34
