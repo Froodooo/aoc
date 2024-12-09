@@ -3,7 +3,7 @@ from utils import *
 INPUT_FILE = "./9.in"
 SAMPLE_FILE = "./9.sample"
 
-input = [int(x) for x in list(read_to_string(SAMPLE_FILE).strip())]
+input = [int(x) for x in list(read_to_string(INPUT_FILE).strip())]
 
 free_spaces = input[1::2]
 # print(free_spaces)
@@ -19,8 +19,9 @@ for file_block_idx, (id, nr_file_blocks) in enumerate(reversed(file_blocks_copy)
     #     continue
     # seen.append(id)
     # print(f"Check file {id} with {nr_file_blocks} blocks")
-    free_space_index = next((i for i in range(len(free_spaces)) if free_spaces[i] >= nr_file_blocks and i <= len(file_blocks) - file_block_idx - 1), None)
-    if free_space_index is not None:
+    free_space_indices = [i for i in range(len(free_spaces)) if free_spaces[i] >= nr_file_blocks and i <= len(file_blocks_copy) - file_block_idx - 1]
+    if free_space_indices:
+        free_space_index = free_space_indices[0]
         # print(f"Found free space at index {free_space_idx} with {free_spaces[free_space_idx]} blocks")
         # del(free_spaces[len(file_blocks) - file_block_idx - 2])
         free_spaces.insert(free_space_index + 1, free_spaces[free_space_index] - nr_file_blocks)
@@ -54,3 +55,5 @@ print(sum)
 # 7107117967813 - too high
 # 7107402132147 - too high
 # 7107699033254 - too high
+
+# 6398096697992 - correct
