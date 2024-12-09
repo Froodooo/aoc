@@ -3,7 +3,7 @@ from utils import *
 INPUT_FILE = "./9.in"
 SAMPLE_FILE = "./9.sample"
 
-input = [int(x) for x in list(read_to_string(SAMPLE_FILE).strip())]
+input = [int(x) for x in list(read_to_string(INPUT_FILE).strip())]
 
 # print(input)
 
@@ -29,10 +29,11 @@ for id, nr_file_blocks in reversed(file_blocks):
     # print(f"Check file {id} with {nr_file_blocks} blocks")
     file_blocks_defragmented = 0
     while file_blocks_defragmented < nr_file_blocks:
+        remaining_blocks = nr_file_blocks - file_blocks_defragmented
         # if len(defragmented_blocks) == len(file_blocks):
         #     defragmented_filesystem.append((id, nr_file_blocks - file_blocks_defragmented))
         #     break
-        if nr_file_blocks - file_blocks_defragmented > free_spaces[0]:
+        if remaining_blocks > free_spaces[0]:
             # print(f"File {id} with {nr_file_blocks - file_blocks_defragmented} remaining blocks is too big for free space {free_spaces[0]}")
             spaces = free_spaces.pop(0)
             defragmented_filesystem.append((id, spaces))
@@ -47,11 +48,11 @@ for id, nr_file_blocks in reversed(file_blocks):
         else:
             # print(f"File {id} with {nr_file_blocks - file_blocks_defragmented} remaining blocks fits in free space {free_spaces[0]}")
             spaces = free_spaces.pop(0)
-            defragmented_filesystem.append((id, nr_file_blocks - file_blocks_defragmented))
-            file_blocks_defragmented += nr_file_blocks - file_blocks_defragmented
+            defragmented_filesystem.append((id, remaining_blocks))
+            file_blocks_defragmented += remaining_blocks
             # print(f"Added {file_blocks_defragmented} blocks for file {id}")
-            if spaces - nr_file_blocks > 0:
-                free_spaces.insert(0, spaces - nr_file_blocks)
+            if spaces - remaining_blocks > 0:
+                free_spaces.insert(0, spaces - remaining_blocks)
             else:
                 next_file_block = file_blocks[file_blocks_position]
                 if next_file_block not in defragmented_blocks:
@@ -71,5 +72,3 @@ for id, nr_file_blocks in defragmented_filesystem:
         sum += index * id
         index += 1
 print(sum)
-
-# 6606216515481 too large
