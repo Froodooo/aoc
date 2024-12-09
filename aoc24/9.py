@@ -3,13 +3,12 @@ from utils import *
 INPUT_FILE = "./9.in"
 SAMPLE_FILE = "./9.sample"
 
-input = [int(x) for x in list(read_to_string(INPUT_FILE).strip())]
+input = [int(x) for x in list(read_to_string(SAMPLE_FILE).strip())]
 
 # print(input)
 
 free_spaces = input[1::2]
 file_blocks = [(block, i) for block, i in enumerate(input[::2])]
-total_file_blocks = sum(input[::2])
 
 # print(free_spaces)
 # print(file_blocks)
