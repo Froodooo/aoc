@@ -3,7 +3,7 @@ from utils import *
 INPUT_FILE = "./9.in"
 SAMPLE_FILE = "./9.sample"
 
-input = [int(x) for x in list(read_to_string(INPUT_FILE).strip())]
+input = [int(x) for x in list(read_to_string(SAMPLE_FILE).strip())]
 
 free_spaces = input[1::2]
 # print(free_spaces)
@@ -19,12 +19,12 @@ for file_block_idx, (id, nr_file_blocks) in enumerate(reversed(file_blocks_copy)
     #     continue
     # seen.append(id)
     # print(f"Check file {id} with {nr_file_blocks} blocks")
-    free_space_indices = [i for i in range(len(free_spaces)) if free_spaces[i] >= nr_file_blocks and i <= len(file_blocks_copy) - file_block_idx - 1]
+    free_space_indices = [i for i in range(len(free_spaces)) if free_spaces[i] >= (nr_file_blocks * len(str(id))) and i <= len(file_blocks_copy) - file_block_idx - 1]
     if free_space_indices:
         free_space_index = free_space_indices[0]
         # print(f"Found free space at index {free_space_idx} with {free_spaces[free_space_idx]} blocks")
         # del(free_spaces[len(file_blocks) - file_block_idx - 2])
-        free_spaces.insert(free_space_index + 1, free_spaces[free_space_index] - nr_file_blocks)
+        free_spaces.insert(free_space_index + 1, free_spaces[free_space_index] - (nr_file_blocks * len(str(id))))
         free_spaces[free_space_index] = 0
         file_blocks_index = file_blocks.index((id, nr_file_blocks))
         file_blocks.insert(free_space_index + 1, file_blocks.pop(file_blocks_index))
@@ -37,7 +37,7 @@ for file_block_idx, (id, nr_file_blocks) in enumerate(reversed(file_blocks_copy)
             free_spaces.pop(file_blocks_index)
             # free_spaces[file_blocks_index] = free_spaces[file_blocks_index - 2] + nr_file_blocks
         else:
-            free_spaces[file_blocks_index] += free_spaces.pop(file_blocks_index - 1) + nr_file_blocks
+            free_spaces[file_blocks_index] += free_spaces.pop(file_blocks_index - 1) + (nr_file_blocks * len(str(id)))
         # print(f"Free space after defragmentation: {free_spaces}")
     
 sum = 0
@@ -49,7 +49,7 @@ index = 0
 for i, (id, nr_file_blocks) in enumerate(file_blocks):
     for j in range(nr_file_blocks):
         sum += (index + j) * id
-    index += nr_file_blocks + free_spaces[i] if i < len(free_spaces) else 0
+    index += (nr_file_blocks // len(str(id))) + free_spaces[i] if i < len(free_spaces) else 0
 print(sum)
 
 # 7107117967813 - too high
