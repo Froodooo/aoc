@@ -13,6 +13,7 @@ total = 0
 def get_trails(x, y, prev, map):
     global trails
     global total
+
     if prev == 8 and map[y][x] == 9:
         nine_heights.add((x, y))
         total += 1
@@ -31,5 +32,6 @@ for y in range(len(map)):
             get_trails(x, y, 0, map)
             total_trails += len(nine_heights)
             nine_heights.clear()
-print(total_trails)
-print(total)
+
+print(total_trails) #p1
+print(total) #p2
