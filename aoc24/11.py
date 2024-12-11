@@ -1,27 +1,29 @@
 from utils import *
-from collections.abc import Iterable
+from collections import deque
 
 INPUT_FILE = "./11.in"
 SAMPLE_FILE = "./11.sample"
 
-stones = [int(x) for x in read_to_line(INPUT_FILE).split()]
-
 def blink(stones):
-    new_stones = []
-    for i in range(len(stones)):
-        if stones[i] == 0:
-            new_stones.append(1)
-        elif len(str(stones[i])) % 2 == 0:
-            string_stone = str(stones[i])
-            left = string_stone[:len(string_stone) // 2]
-            right = string_stone[len(string_stone) // 2:]
-            new_stones.append(int(left))
-            new_stones.append(int(right))
+    for _ in range(len(stones)):
+        stone = stones.popleft()
+        if stone == 0:
+            stones.append(1)
+        elif len(str(stone)) % 2 == 0:
+            digits = len(str(stone))
+            half = 10 ** (digits // 2)
+            left = stone // half
+            right = stone % half
+            stones.append(left)
+            stones.append(right)
         else:
-            new_stones.append(stones[i] * 2024)
-    return new_stones
+            stones.append(stone * 2024)
 
-for _ in range(75):
-    stones = blink(stones)
-    # print(stones)
+stones = deque(int(x) for x in read_to_line(SAMPLE_FILE).split())
+print(stones)
+
+for i in range(75):
+    print(i + 1)
+    blink(stones)
+
 print(len(stones))
