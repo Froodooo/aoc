@@ -26,7 +26,6 @@ def get_pushes(parsed_machine):
         if (press_a, press_b) in seen:
             continue
         seen.add((press_a, press_b))
-        # print(press_a, press_b)
         value_x = press_a * button_ax + press_b * button_bx
         value_y = press_a * button_ay + press_b * button_by
         if value_x == prize_x and value_y == prize_y:
@@ -40,14 +39,20 @@ def get_pushes(parsed_machine):
         queue.append((press_a, press_b+1))
     return None
 
-input = read_to_string(INPUT_FILE)
-machines = input.split("\n\n")
-sum = 0
-for i, machine in enumerate(machines):
-    # print(i+1)
-    parsed_machine = parse_machine(machine)
-    pushes = get_pushes(parsed_machine)
-    if pushes:
-        press_a, press_b = pushes
-        sum += press_a * 3 + press_b
-print(sum)
+def part_one(path):
+    input = read_to_string(path)
+    machines = input.split("\n\n")
+    sum = 0
+    for i, machine in enumerate(machines):
+        parsed_machine = parse_machine(machine)
+        pushes = get_pushes(parsed_machine)
+        if pushes:
+            press_a, press_b = pushes
+            sum += press_a * 3 + press_b
+    return sum
+
+assert part_one(SAMPLE_FILE) == 480
+assert part_one(INPUT_FILE) == 39996
+
+part_one = part_one(INPUT_FILE)
+print(part_one)
