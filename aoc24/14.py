@@ -4,11 +4,11 @@ from math import prod
 INPUT_FILE = "./14.in"
 SAMPLE_FILE = "./14.sample"
 
-def print_grid(positions, x_width, y_width):
+def print_grid(positions, x_width, y_width, char=None):
     for i in range(y_width):
         for j in range(x_width):
             if (j, i) in positions:
-                print(positions.count((j, i)), end="")
+                print(char if char else positions.count((j, i)), end="")
             else:
                 print(".", end="")
         print()
@@ -61,7 +61,7 @@ def part_two(path, x_width, y_width):
             pos_x = (pos_x + vel_x * counter) % x_width
             pos_y = (pos_y + vel_y * counter) % y_width
             seen.add((pos_x, pos_y))
-    print_grid(list(seen), x_width, y_width)
+    print_grid(list(seen), x_width, y_width, "#")
     return counter
 
 assert part_one(SAMPLE_FILE, 11, 7) == 12
