@@ -61,6 +61,7 @@ def part_two(path, x_width, y_width):
             pos_x = (pos_x + vel_x * counter) % x_width
             pos_y = (pos_y + vel_y * counter) % y_width
             seen.add((pos_x, pos_y))
+    print_grid(list(seen), x_width, y_width)
     return counter
 
 assert part_one(SAMPLE_FILE, 11, 7) == 12
