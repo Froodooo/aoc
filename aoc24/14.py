@@ -48,7 +48,7 @@ def part_one(path, x_width, y_width):
     quadrands = count_quadrants(positions, x_width, y_width)
     return prod(quadrands)
 
-def part_two(path, x_width, y_width):
+def part_two(path, x_width, y_width, print=False):
     input = read_to_list(path)
     total = len(input)
     seen = set()
@@ -61,7 +61,7 @@ def part_two(path, x_width, y_width):
             pos_x = (pos_x + vel_x * counter) % x_width
             pos_y = (pos_y + vel_y * counter) % y_width
             seen.add((pos_x, pos_y))
-    print_grid(list(seen), x_width, y_width, "#")
+    if print: print_grid(list(seen), x_width, y_width, "#")
     return counter
 
 assert part_one(SAMPLE_FILE, 11, 7) == 12
@@ -70,5 +70,5 @@ assert part_one(INPUT_FILE, 101, 103) == 217328832
 assert part_two(INPUT_FILE, 101, 103) == 7412
 
 part_one = part_one(INPUT_FILE, 101, 103)
-part_two = part_two(INPUT_FILE, 101, 103)
+part_two = part_two(INPUT_FILE, 101, 103, True)
 print(part_one, part_two)
