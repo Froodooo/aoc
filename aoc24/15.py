@@ -72,14 +72,14 @@ def print_warehouse(warehouse, boxes, walls, rx, ry):
                 print(".", end="")
         print()
 
-warehouse, moves = read_to_string(SAMPLE_FILE).split("\n\n")
+warehouse, moves = read_to_string(INPUT_FILE).split("\n\n")
 warehouse = [list(x) for x in warehouse.split("\n")]
 move_lines = [list(x) for x in moves.split("\n")]
 
 walls = read_objects(warehouse, "#", True)
 boxes = read_objects(warehouse, "O", True)
 rx, ry = read_objects(warehouse, "@", True).pop()
-counter = 0
+# counter = 0
 # print_warehouse(warehouse, boxes, walls, rx, ry)
 for move_line in move_lines:
     for move in move_line:
@@ -131,7 +131,7 @@ for move_line in move_lines:
                 # boxes.add(tuple(box_parts_moved))
         rx, ry = rx + dx, ry + dy
         # print_warehouse(warehouse, boxes, walls, rx, ry)
-        counter += 1
+        # counter += 1
         # if counter == 225:
         #     break
 
