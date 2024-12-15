@@ -72,7 +72,7 @@ def print_warehouse(warehouse, boxes, walls, rx, ry):
                 print(".", end="")
         print()
 
-warehouse, moves = read_to_string(INPUT_FILE).split("\n\n")
+warehouse, moves = read_to_string(SAMPLE_FILE).split("\n\n")
 warehouse = [list(x) for x in warehouse.split("\n")]
 move_lines = [list(x) for x in moves.split("\n")]
 
@@ -136,7 +136,7 @@ for move_line in move_lines:
         #     break
 
 # print(boxes)
-# print_warehouse(warehouse, boxes, walls, rx, ry)
+print_warehouse(warehouse, boxes, walls, rx, ry)
 print(sum([x + y * 100 for ((x, y), (_, _)) in boxes]))
 
 # assert part_one(SAMPLE_FILE) == 10092
