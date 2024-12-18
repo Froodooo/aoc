@@ -28,9 +28,27 @@ def part_one(path, max_x = 70, max_y = 70, sample_size = 1024):
     path = bfs(start, end, max_x, max_y, memory)
     return len(path) - 1
 
+def part_two(path, max_x = 70, max_y = 70, sample_size = 1024):
+    start = (0, 0)
+    end = (max_x, max_y)
+
+    bytes = [tuple(int(y) for y in x.split(",")) for x in read_to_list(path)]
+    bytes_sample = bytes[:sample_size]
+
+    memory = set(bytes_sample)
+    while bfs(start, end, max_x, max_y, memory):
+        memory.add(bytes[sample_size])
+        sample_size += 1
+    (x, y) =  bytes[sample_size - 1]
+    return f"{x},{y}"
+
 assert part_one(SAMPLE_FILE, 6, 6, 12) == 22
 assert part_one(INPUT_FILE) == 246
 
+assert part_two(SAMPLE_FILE, 6, 6, 12) == "6,1"
+assert part_two(INPUT_FILE) == "22,50"
+
 part_one = part_one(INPUT_FILE)
-print(part_one)
+part_two = part_two(INPUT_FILE)
+print(part_one, part_two)
 
