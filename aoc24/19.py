@@ -16,13 +16,14 @@ def count_designs(design, patterns):
     if design in cache:
         return cache[design]
     
-    sum = 0
     if not design:
         return 1
     
-    for pattern in patterns:
-        if design.startswith(pattern):
-            sum += count_designs(design[len(pattern):], patterns)
+    sum = 0
+    
+    for i in range(len(design) + 1):
+        if design[:i] in patterns:
+            sum += count_designs(design[i:], patterns)
 
     cache[design] = sum
     return sum
