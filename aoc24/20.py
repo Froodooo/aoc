@@ -32,18 +32,20 @@ cheats_seen = []
 cheats_by_time = {}
 
 for i, (x, y) in enumerate(path):
+    print(f"{i + 1}/{len(path)}")
     for (dx, dy) in ((1, 0), (-1, 0), (0, 1), (0, -1)):
         xx, yy = x + dx, y + dy
         if (xx, yy) not in walls: continue
         if xx == 0 or yy == 0 or xx == len(input[y]) - 1 or yy == len(input) - 1: continue
         if (xx + dx, yy + dy) in walls: continue
         if (xx + dx, yy + dy) in path and path.index((xx + dx, yy + dy)) < i: continue
+        if time - (i + manhattan_distance((x, y), goal)) < 100: continue
         cheat_walls = [(x, y) for (x, y) in walls if (x, y) != (xx, yy)]
         cheat_path = bfs(start, goal, cheat_walls)
         cheat_time = len(cheat_path) - 1
         # print(cheat_time)
         saved_time = time - cheat_time
-        if saved_time <= 99: continue
+        if saved_time <= 0: continue
         cheat_key = (x, y, xx + dx, yy + dy)
         if cheat_key in cheats_seen: continue
         cheats_seen.append(cheat_key)
