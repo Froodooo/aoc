@@ -1,27 +1,33 @@
-from utils import *
+from __future__ import annotations
 
-def setup(path):
-  input = read_to_list(path)
+from pathlib import Path
+from typing import List
 
-  return input
+from utils import read_to_list
 
-def part_one(path):
-  input = setup(path)
-  
+
+def parse_input(path: Path) -> List[str]:
+  """Read the puzzle input and return as a list of lines.
+
+  Use `read_to_list` from `utils.py` so this is easy to swap later.
+  """
+  return [int(line) for line in read_to_list(str(path))]
+
+
+def part_one(data: List[str]) -> int:
+  """Solve part one.
+
+  Replace the body with puzzle logic. Accepts parsed input rather than a
+  path so it's easy to call from tests.
+  """
+  # TODO: implement
   return 0
 
-# def part_two(path):
-#   input = setup(path)
-  
-#   return 0
 
-assert part_one("./1.sample") == 0
-# assert part_two("./1.sample") == 0
+def part_two(data: List[str]) -> int:
+  """Solve part two.
 
-assert part_one("./1.in") == 0
-# assert part_two("./1.in") == 0
-
-path = "./1.in"
-result_one = part_one(path)
-# result_two = part_two(path)
-print(result_one)
+  Optional: implement when needed.
+  """
+  # TODO: implement
+  return 0
