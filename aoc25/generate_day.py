@@ -7,15 +7,12 @@ Usage:
 The generated Python file follows the project's per-day template (only
 `parse_input`, `part_one`, `part_two`).
 """
-from __future__ import annotations
 
 import argparse
 from pathlib import Path
 import textwrap
 
-PY_TEMPLATE = """from __future__ import annotations
-
-from pathlib import Path
+PY_TEMPLATE = """from pathlib import Path
 from typing import List
 
 from utils import read_to_list
@@ -55,14 +52,11 @@ def write_file(path: Path, content: str, force: bool = False) -> None:
 
 
 def create_day(n: int, force: bool) -> None:
-    # Always create files in the current directory: N.py, N.sample, N.in
     base = Path('.')
     py_path = base / f"{n}.py"
     sample_path = base / f"{n}.sample"
     in_path = base / f"{n}.in"
 
-    # Avoid accidental formatting of template braces (the template contains
-    # f-strings and other braces). Replace only the `{n}` placeholder.
     py_content = textwrap.dedent(PY_TEMPLATE)
     sample_content = SAMPLE_TEXT.format(n=n)
     in_content = EMPTY_IN.format(n=n)

@@ -19,7 +19,6 @@ from typing import Optional
 
 
 def find_day_file(n: int) -> Optional[Path]:
-    # Only look for `N.py` in the current directory.
     p = Path(f"{n}.py")
     return p if p.exists() else None
 
@@ -48,11 +47,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Day {day} file not found. Looked in current directory for {day}.py")
         return 2
 
-    # load module with a stable name
     modname = f"aoc_day_{day:02d}"
     mod = load_module_from_path(day_file, modname)
 
-    # Determine input path based on CLI flags
     if args.sample:
         input_path = Path(f"./{day}.sample")
     elif args.input is not None:
@@ -64,7 +61,6 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Input file not found: {input_path}")
         return 3
 
-    # Extract required functions from day module
     parse_input = getattr(mod, "parse_input", None)
     part_one = getattr(mod, "part_one", None)
     part_two = getattr(mod, "part_two", None)
