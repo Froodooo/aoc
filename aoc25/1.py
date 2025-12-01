@@ -4,18 +4,48 @@ from typing import List
 from utils import read_to_list
 
 
+def zero_passes(pointer:int, direction:str, clicks:int) -> int:
+    count = 0
+    
+    for _ in range(clicks):
+        pointer = (pointer + 1) % 100 if direction == 'R' else (pointer - 1) % 100
+        if pointer == 0:
+            count += 1
+
+    return count
+
+
+def rotate(pointer:int, direction:str, clicks:int) -> int:
+    return (pointer + clicks) % 100 if direction == 'R' else (pointer - clicks) % 100
+
+
 def parse_input(path: Path) -> List[str]:
     '''Read the puzzle input and return as a list of lines.'''
     return read_to_list(str(path))
 
 
 def part_one(data: List[str]) -> int:
-    '''Solve part one. Replace with puzzle logic.'''
-    # TODO: implement
-    return 0
+    pointer = 50
+    zero_pointer = 0
+
+    for line in data:
+        direction = line[0]
+        clicks = int(line[1:])
+        pointer = rotate(pointer, direction, clicks)
+        if pointer == 0:
+            zero_pointer += 1
+
+    return zero_pointer
 
 
 def part_two(data: List[str]) -> int:
-    '''Solve part two. Replace with puzzle logic.'''
-    # TODO: implement
-    return 0
+    pointer = 50
+    zero_pointer = 0
+
+    for line in data:
+        direction = line[0]
+        clicks = int(line[1:])
+        zero_pointer += zero_passes(pointer, direction, clicks)
+        pointer = rotate(pointer, direction, clicks)
+
+    return zero_pointer
