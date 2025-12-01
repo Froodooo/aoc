@@ -11,6 +11,7 @@ The generated Python file follows the project's per-day template (only
 import argparse
 from pathlib import Path
 import textwrap
+from typing import Optional
 
 PY_TEMPLATE = """from pathlib import Path
 from typing import List
@@ -66,7 +67,7 @@ def create_day(n: int, force: bool) -> None:
     write_file(in_path, in_content, force=force)
 
 
-def main_cli(argv: list[str] | None = None) -> int:
+def main_cli(argv: Optional[list] = None) -> int:
     p = argparse.ArgumentParser(description="Generate Advent of Code day scaffold")
     p.add_argument("day", type=int, help="day number (e.g. 2)")
     p.add_argument("--force", "-f", action="store_true", help="overwrite existing files")
