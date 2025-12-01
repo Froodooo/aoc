@@ -4,7 +4,7 @@ from typing import List
 from utils import read_to_list
 
 
-def zero_passes(pointer:int, direction:str, clicks:int) -> int:
+def zero_passes(pointer: int, direction: str, clicks: int) -> int:
     count = 0
 
     for _ in range(clicks):
@@ -14,11 +14,11 @@ def zero_passes(pointer:int, direction:str, clicks:int) -> int:
     return count
 
 
-def zero_point(pointer:int) -> int:
+def zero_point(pointer: int) -> int:
     return 1 if pointer == 0 else 0
 
 
-def rotate(pointer:int, direction:str, clicks:int) -> int:
+def rotate(pointer: int, direction: str, clicks: int) -> int:
     return (pointer + clicks) % 100 if direction == 'R' else (pointer - clicks) % 100
 
 
