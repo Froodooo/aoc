@@ -12,11 +12,11 @@ def calculate_joltage(banks: List[List[int]], nr_of_batteries: int) -> int:
     total_joltage = 0
     for bank in banks:
         joltage = ""
-        max_index = 0
+        start_index = 0
         for i in range(1, nr_of_batteries + 1):
             end_index = -(nr_of_batteries - i) if (nr_of_batteries - i) != 0 else len(bank)
-            max_battery = max(bank[max_index:end_index])
-            max_index = bank[max_index:end_index].index(max_battery) + max_index + 1
+            max_battery = max(bank[start_index:end_index])
+            start_index = bank[start_index:end_index].index(max_battery) + start_index + 1
             joltage += str(max_battery)
         total_joltage += int(joltage)
     return total_joltage
