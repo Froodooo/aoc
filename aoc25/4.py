@@ -16,7 +16,7 @@ def count_adjacent(data: List[List[str]], x: int, y: int,) -> int:
     return count
 
 
-def run(data: List[List[str]]):
+def run(data: List[List[str]]) -> tuple[int, List[tuple[int, int]]]:
     accessible = 0
     to_remove = []
     for y in range(len(data)):
@@ -30,7 +30,7 @@ def run(data: List[List[str]]):
     return (accessible, to_remove)
 
 
-def parse_input(path: Path) -> List[str]:
+def parse_input(path: Path) -> List[List[str]]:
     return [list(line) for line in read_to_list(str(path))]
 
 
