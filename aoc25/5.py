@@ -5,8 +5,7 @@ from utils import read_to_string
 
 
 def parse_input(path: Path) -> List[str]:
-    [fresh_ranges, ingredient_ids] = [
-        x.split('\n') for x in read_to_string(str(path)).split('\n\n')]
+    [fresh_ranges, ingredient_ids] = [x.split('\n') for x in read_to_string(str(path)).split('\n\n')]
     ingredient_ids = [int(x) for x in ingredient_ids[1:]]
     return [fresh_ranges, ingredient_ids]
 
@@ -26,8 +25,7 @@ def part_one(data: List[str]) -> int:
 
 def part_two(data: List[str]) -> int:
     [fresh_ranges, _] = data
-    fresh_ranges = [tuple(map(int, fresh_range.split('-')))
-                    for fresh_range in fresh_ranges]
+    fresh_ranges = [tuple(map(int, fresh_range.split('-'))) for fresh_range in fresh_ranges]
     non_overlapping_ranges = []
 
     # Inspired by https://stackoverflow.com/a/15273749
@@ -38,7 +36,6 @@ def part_two(data: List[str]) -> int:
         else:
             non_overlapping_ranges.append((begin, end))
 
-    fresh_ingredients_count = sum(
-        end - begin + 1 for begin, end in non_overlapping_ranges)
+    fresh_ingredients_count = sum(end - begin + 1 for begin, end in non_overlapping_ranges)
 
     return fresh_ingredients_count
