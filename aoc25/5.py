@@ -25,13 +25,13 @@ def part_one(data: List[str]) -> int:
 
 def part_two(data: List[str]) -> int:
     [fresh_ranges, _] = data
-    fresh_ranges = [tuple(map(int, fresh_range.split('-'))) for fresh_range in fresh_ranges]
-    non_overlapping_ranges = []
+    fresh_ranges = sorted([tuple(map(int, fresh_range.split('-'))) for fresh_range in fresh_ranges])
+    non_overlapping_ranges = fresh_ranges[:1]
 
     # Inspired by https://stackoverflow.com/a/15273749
-    for begin, end in sorted(fresh_ranges):
-        if non_overlapping_ranges and non_overlapping_ranges[-1][1] >= begin - 1:
-            prev_begin, prev_end = non_overlapping_ranges[-1]
+    for begin, end in fresh_ranges[1:]:
+        prev_begin, prev_end = non_overlapping_ranges[-1]
+        if prev_end >= begin - 1:
             non_overlapping_ranges[-1] = (prev_begin, max(prev_end, end))
         else:
             non_overlapping_ranges.append((begin, end))
