@@ -29,6 +29,8 @@ def part_two(data: List[str]) -> int:
     fresh_ranges = [tuple(map(int, fresh_range.split('-')))
                     for fresh_range in fresh_ranges]
     non_overlapping_ranges = []
+
+    # Inspired by https://stackoverflow.com/a/15273749
     for begin, end in sorted(fresh_ranges):
         if non_overlapping_ranges and non_overlapping_ranges[-1][1] >= begin - 1:
             prev_begin, prev_end = non_overlapping_ranges[-1]
