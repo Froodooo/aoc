@@ -4,18 +4,13 @@ from typing import List
 from utils import read_to_list
 
 
-# SEEN_ENDS = set()
 SEEN_SPLITS = set()
 SEEN = set()
-PATHS = set()
 
 def beam(manifold: List[List[str]], start: tuple[int, int], path: str = ""):
     (sr, sc) = start
 
     if sr >= len(manifold):
-        PATHS.add(path)
-        # if (sr - 1, sc) not in SEEN_ENDS:
-        #     SEEN_ENDS.add((sr - 1, sc))
         return
     
     if (sr, sc) not in SEEN:
@@ -26,21 +21,14 @@ def beam(manifold: List[List[str]], start: tuple[int, int], path: str = ""):
             SEEN_SPLITS.add((sr, sc))
         split_left = (sr, sc - 1)
         split_right = (sr, sc + 1)
-        # beam(manifold, split_left, path + f"({sr},{sc - 1})")
-        # beam(manifold, split_right, path + f"({sr},{sc + 1})")
 
-        if not any(p for p in PATHS if path + f"({sr},{sc - 1})" in p):
+        if split_left not in SEEN and split_right not in SEEN:
             beam(manifold, split_left, path + f"({sr},{sc - 1})")
-        if not any(p for p in PATHS if path + f"({sr},{sc + 1})" in p):
             beam(manifold, split_right, path + f"({sr},{sc + 1})")
-
-        # if split_left not in SEEN and split_right not in SEEN:
-        #     beam(manifold, split_left, path + f"({sr},{sc - 1})")
-        #     beam(manifold, split_right, path + f"({sr},{sc + 1})")
-        # if split_left not in SEEN and split_right in SEEN:
-        #     beam(manifold, split_left, path + f"({sr},{sc - 1})")
-        # if split_right not in SEEN and split_left in SEEN:
-        #     beam(manifold, split_right, path + f"({sr},{sc + 1})")
+        if split_left not in SEEN and split_right in SEEN:
+            beam(manifold, split_left, path + f"({sr},{sc - 1})")
+        if split_right not in SEEN and split_left in SEEN:
+            beam(manifold, split_right, path + f"({sr},{sc + 1})")
     else:
         beam(manifold, (sr + 1, sc), path)
 
@@ -66,4 +54,4 @@ def part_one(data: List[str]) -> int:
 def part_two(data: List[str]) -> int:
     (sr, sc) = find_start(data)
     beam(data, (sr, sc))
-    return len(PATHS)
+    return 0
