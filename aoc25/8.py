@@ -5,7 +5,7 @@ from math import dist
 from utils import read_to_list
 
 
-def parse_input(path: Path) -> List[str]:
+def parse_input(path: Path) -> List[tuple]:
     return [tuple(map(int, line.split(','))) for line in read_to_list(str(path))]
 
 
