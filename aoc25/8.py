@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import List
-import math
+from math import dist
 
 from utils import read_to_list
 
@@ -33,10 +33,11 @@ def calculate_distances(points: List[str]) -> List[tuple]:
     for i in range(len(points)):
         for j in range(i + 1, len(points)):
             p1, p2 = points[i], points[j]
-            d = math.dist(p1, p2)
+            d = dist(p1, p2)
             distances.append(((i, j), d))
 
     distances.sort(key=lambda x: x[1])
+
     return distances
 
 
@@ -44,12 +45,12 @@ def part_one(points: List[str]) -> int:
     distances = calculate_distances(points)
     circuits = init_circuits(len(points))
 
-    for i in range(10):
+    for i in range(1000):
         ((p1, p2), _) = distances[i]
         connect(circuits, p1, p2)
 
     circuits = sorted(circuits, key=lambda x: len(x), reverse=True)
-    
+
     return len(circuits[0]) * len(circuits[1]) * len(circuits[2])
 
 
@@ -63,5 +64,5 @@ def part_two(points: List[str]) -> int:
         ((p1, p2), _) = distances[i]
         connect(circuits, p1, p2)
         i += 1
-    
+
     return points[p1][0] * points[p2][0]
