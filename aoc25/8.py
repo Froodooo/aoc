@@ -9,13 +9,13 @@ def parse_input(path: Path) -> List[tuple]:
     return [tuple(map(int, line.split(','))) for line in read_to_list(str(path))]
 
 
-def connect(circuits: List[set], point1: int, point2: int) -> None:
+def connect(circuits: List[set], p1: int, p2: int) -> None:
     set1 = set2 = None
 
     for s in circuits:
-        if point1 in s:
+        if p1 in s:
             set1 = s
-        if point2 in s:
+        if p2 in s:
             set2 = s
 
     if set1 is not set2:
