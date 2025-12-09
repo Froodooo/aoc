@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+from shapely.geometry import Polygon
 
 from utils import read_to_list
 
@@ -22,16 +23,16 @@ def part_one(data: List[str]) -> int:
 
 def part_two(data: List[str]) -> int:
     largest = 0
+    poly_area = Polygon(data)
     for i in range(len(data)):
-        x1, y1 = data[i]
-        if i == 0:
-            x0, y0 = data[-1]
-        else:
-            x0, y0 = data[i - 1]
-        if i == len(data) - 1:
-            x2, y2 = data[0]
-        else:
-            x2, y2 = data[i + 1]
-
-        
+        for j in range(i + 1, len(data)):
+            x1, y1 = data[i]
+            x2, y2 = data[j]
+            x_min, x_max = min(x1, x2), max(x1, x2)
+            y_min, y_max = min(y1, y2), max(y1, y2)
+            rectangle = Polygon([(x_min, y_min), (x_min, y_max), (x_max, y_max), (x_max, y_min)])
+            if rectangle.within(poly_area):
+                area = (abs(x1 - x2) + 1) * (abs(y1 - y2) + 1)
+                if area > largest:
+                    largest = area
     return largest
