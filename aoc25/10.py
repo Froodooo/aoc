@@ -1,8 +1,9 @@
-from pathlib import Path
-from typing import List
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, PULP_CBC_CMD
-from re import sub
 from itertools import combinations
+from pathlib import Path
+from re import sub
+from typing import List
+
+from pulp import LpMinimize, LpProblem, LpVariable, PULP_CBC_CMD, lpSum
 
 from utils import read_to_list
 
@@ -35,19 +36,6 @@ def bitmask_to_int(bitmask: str) -> int:
     return int(bitmask, 2)
 
 
-def find_shortest_xor_combo(button_wirings: List[str], target: str) -> List[str]:
-    target_int = bitmask_to_int(target)
-    values = [bitmask_to_int(b) for b in button_wirings]
-
-    for r in range(1, len(button_wirings) + 1):
-        for combo in combinations(range(len(button_wirings)), r):
-            xor_value = 0
-            for i in combo:
-                xor_value ^= values[i]
-            if xor_value == target_int:
-                return [button_wirings[i] for i in combo]
-
-
 def button_wiring_to_bitmask(button_wirings_list: List[int], length: int) -> List[str]:
     button_wirings = []
     for button_wiring in button_wirings_list:
@@ -71,7 +59,20 @@ def button_wiring_to_vector(button_wirings: List[int], length: int) -> List[int]
     return button_vectors
 
 
-def configure_machine(vectors: List[tuple], target: List[int], start: tuple) -> int:
+def start_machine(button_wirings_bitmask: List[str], light_diagram: int) -> List[str]:
+    button_wirings = [bitmask_to_int(b) for b in button_wirings_bitmask]
+    buttons_length = len(button_wirings)
+
+    for r in range(1, buttons_length + 1):
+        for combo in combinations(range(buttons_length), r):
+            xor_value = 0
+            for i in combo:
+                xor_value ^= button_wirings[i]
+            if xor_value == light_diagram:
+                return [button_wirings[i] for i in combo]
+
+
+def configure_machine(vectors: List[tuple], target: List[int]) -> int:
     problem = LpProblem("configure_machine", LpMinimize)
 
     variables = [
@@ -82,8 +83,7 @@ def configure_machine(vectors: List[tuple], target: List[int], start: tuple) -> 
     problem += lpSum(variables)
 
     for i in range(len(target)):
-        problem += lpSum(vectors[j][i] * variables[j]
-                         for j in range(len(vectors))) == target[i]
+        problem += lpSum(vectors[j][i] * variables[j] for j in range(len(vectors))) == target[i]
 
     problem.solve(PULP_CBC_CMD(msg=False))
 
@@ -92,10 +92,10 @@ def configure_machine(vectors: List[tuple], target: List[int], start: tuple) -> 
 
 def part_one(data: List[str]) -> int:
     button_presses = 0
+
     for (light_diagram, button_wirings, _) in data:
-        button_wirings = button_wiring_to_bitmask(
-            button_wirings, len(light_diagram))
-        result = find_shortest_xor_combo(button_wirings, light_diagram)
+        button_wirings_bitmask = button_wiring_to_bitmask(button_wirings, len(light_diagram))
+        result = start_machine(button_wirings_bitmask, bitmask_to_int(light_diagram))
         button_presses += len(result)
 
     return button_presses
@@ -104,10 +104,7 @@ def part_one(data: List[str]) -> int:
 def part_two(data: List[str]) -> int:
     button_presses = 0
     for (_, button_wirings, joltage_requirements) in data:
-        button_vectors = button_wiring_to_vector(
-            button_wirings, len(joltage_requirements))
-        joltage_start = tuple([0] * len(joltage_requirements))
-        button_presses += configure_machine(button_vectors,
-                                            joltage_requirements, joltage_start)
+        button_vectors = button_wiring_to_vector(button_wirings, len(joltage_requirements))
+        button_presses += configure_machine(button_vectors, joltage_requirements)
 
     return button_presses
