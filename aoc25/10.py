@@ -81,7 +81,6 @@ def part_one(data: List[str]) -> int:
 def configure_machine(button_vectors: List[tuple], joltage_requirements: List[int], start: tuple):
     length = len(joltage_requirements)
     
-    # BFS: queue holds (state, distance)
     queue = deque([(start, 0)])
     visited = {start}
     
@@ -89,10 +88,8 @@ def configure_machine(button_vectors: List[tuple], joltage_requirements: List[in
         state, dist = queue.popleft()
 
         for vector in button_vectors:
-            # Apply operation
             new_state = tuple(state[i] + vector[i] for i in range(length))
 
-            # Prune if any coordinate overshoots target
             if any(new_state[i] > joltage_requirements[i] for i in range(length)):
                 continue
 
