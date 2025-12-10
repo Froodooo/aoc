@@ -79,12 +79,11 @@ def part_one(data: List[str]) -> int:
 
 
 def configure_machine(button_vectors: List[tuple], joltage_requirements: List[int], start: tuple):
-    joltage = tuple([0] * len(joltage_requirements))
     length = len(joltage_requirements)
     
     # BFS: queue holds (state, distance)
-    queue = deque([(joltage, 0)])
-    visited = {joltage}
+    queue = deque([(start, 0)])
+    visited = {start}
     
     while queue:
         state, dist = queue.popleft()
