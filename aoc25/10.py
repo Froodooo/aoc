@@ -30,6 +30,23 @@ def parse_input(path: Path) -> List[str]:
     return lines
 
 
+def bitmask_to_int(b):
+    return int(b, 2)
+
+
+def find_shortest_xor_combo(bits, target):
+    target_int = bitmask_to_int(target)
+    values = [bitmask_to_int(b) for b in bits]
+
+    for r in range(1, len(bits) + 1):
+        for combo in combinations(range(len(bits)), r):
+            xor_value = 0
+            for i in combo:
+                xor_value ^= values[i]
+            if xor_value == target_int:
+                return [bits[i] for i in combo]
+
+
 def button_wiring_to_bitmask(button_wirings_list: List[int], length: int) -> str:
     button_wirings = []
     for button_wiring in button_wirings_list:
@@ -49,33 +66,6 @@ def button_wiring_to_vector(button_wirings: List[int], length: int) -> List[int]
             bitmask[bit] = 1
         button_vectors.append(bitmask)
     return button_vectors
-
-
-def bitmask_to_int(b):
-    return int(b, 2)
-
-
-def find_shortest_xor_combo(bits, target):
-    target_int = bitmask_to_int(target)
-    values = [bitmask_to_int(b) for b in bits]
-
-    for r in range(1, len(bits) + 1):
-        for combo in combinations(range(len(bits)), r):
-            xor_value = 0
-            for i in combo:
-                xor_value ^= values[i]
-            if xor_value == target_int:
-                return [bits[i] for i in combo]
-
-
-def part_one(data: List[str]) -> int:
-    button_presses = 0
-    for (light_diagram, button_schematics, _) in data:
-        button_schematics = button_wiring_to_bitmask(button_schematics, len(light_diagram))
-        result = find_shortest_xor_combo(button_schematics, light_diagram)
-        button_presses += len(result)
-
-    return button_presses
 
 
 def configure_machine(button_vectors: List[tuple], joltage_requirements: List[int], start: tuple):
@@ -98,7 +88,17 @@ def configure_machine(button_vectors: List[tuple], joltage_requirements: List[in
 
             if new_state not in visited:
                 visited.add(new_state)
-                queue.append((new_state, dist + 1))  
+                queue.append((new_state, dist + 1)) 
+
+
+def part_one(data: List[str]) -> int:
+    button_presses = 0
+    for (light_diagram, button_schematics, _) in data:
+        button_schematics = button_wiring_to_bitmask(button_schematics, len(light_diagram))
+        result = find_shortest_xor_combo(button_schematics, light_diagram)
+        button_presses += len(result)
+
+    return button_presses 
 
 
 def part_two(data: List[str]) -> int:
