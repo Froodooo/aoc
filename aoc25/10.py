@@ -12,24 +12,23 @@ def parse_light_diagram(line: str) -> str:
     return sub('[#]', '1', sub('[.]', '0', sub('[\\[\\]]', '', line)))
 
 
-def parse_button_wirings(line: str, length: int) -> List[int]:
-    return [[int(y) for y in x.split(',')] for x in [sub('[()]', '', c) for c in line[1:len(line)-1]]]
+def parse_button_wirings(tokens: List[str]) -> List[int]:
+    return [[int(y) for y in x.split(',')] for x in [sub('[()]', '', c) for c in tokens[1:len(tokens)-1]]]
 
 
-def parse_joltage_requirements(line: str) -> tuple[int]:
-    return tuple([int(x) for x in sub('[\\{\\}]', '', line[-1]).split(',')])
+def parse_joltage_requirements(tokens: List[str]) -> tuple[int]:
+    return tuple([int(x) for x in sub('[\\{\\}]', '', tokens[-1]).split(',')])
 
 
 def parse_input(path: Path) -> List[tuple]:
-    data = [line.split(" ") for line in read_to_list(str(path))]
-    lines = []
-    for line in data:
-        light_diagram = parse_light_diagram(line[0])
-        button_wirings = parse_button_wirings(line, len(light_diagram))
-        joltage_requirements = parse_joltage_requirements(line)
-        lines.append((light_diagram, button_wirings, joltage_requirements))
+    def parse_line(line: str) -> tuple:
+        tokens = line.split(" ")
+        light_diagram = parse_light_diagram(tokens[0])
+        button_wirings = parse_button_wirings(tokens)
+        joltage_requirements = parse_joltage_requirements(tokens)
+        return light_diagram, button_wirings, joltage_requirements
 
-    return lines
+    return [parse_line(line) for line in read_to_list(str(path))]
 
 
 def bitmask_to_int(bitmask: str) -> int:
