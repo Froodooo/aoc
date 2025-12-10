@@ -72,34 +72,21 @@ def button_wiring_to_vector(button_wirings: List[int], length: int) -> List[int]
 
 
 def configure_machine(vectors: List[tuple], target: List[int], start: tuple) -> int:
-    """
-    Solve: minimize sum x_j
-    s.t.   sum_j x_j * vectors[j][i] = target[i]  for each coordinate i
-           x_j >= 0 and integer
-
-    Returns the minimal number of vectors (sum x_j) or None if impossible.
-    """
-    # Define problem
     problem = LpProblem("configure_machine", LpMinimize)
 
-    # Decision vars: x_i >= 0, integer
     variables = [
         LpVariable(f"x_{i}", lowBound=0, cat="Integer")
         for i in range(len(vectors))
     ]
 
-    # Objective: minimize total number of vectors used
     problem += lpSum(variables)
 
-    # Constraints: component-wise equality to target
     for i in range(len(target)):
         problem += lpSum(vectors[j][i] * variables[j]
                          for j in range(len(vectors))) == target[i]
 
-    # Solve
     problem.solve(PULP_CBC_CMD(msg=False))
 
-    # Sum of all chosen counts = number of vectors used
     return sum(int(var.value()) for var in variables)
 
 
