@@ -31,28 +31,22 @@ def bfs(rack, start):
     return paths
 
 
-def dfs_with_required_servers(rack, start, required_nodes=('dac', 'fft')):
-    required_index = {server: idx for idx, server in enumerate(required_nodes)}
-    required_mask = (1 << len(required_nodes)) - 1
-
-    def visit_mask(server: str) -> int:
-        return 1 << required_index[server] if server in required_index else 0
-
-    start_mask = visit_mask(start)
+def dfs_with_required_servers(rack, start):
 
     @lru_cache(maxsize=None)
-    def dfs(server: str, mask: int) -> int:
+    def dfs(server: str, seen_dac=False, seen_fft=False) -> int:
         total_paths = 0
         for neighbour in rack[server]:
-            new_mask = mask | visit_mask(neighbour)
+            new_seen_dac = neighbour == 'dac' or seen_dac
+            new_seen_fft = neighbour == 'fft' or seen_fft
             if neighbour == 'out':
-                if new_mask == required_mask:
+                if new_seen_fft and new_seen_dac:
                     total_paths += 1
                 continue
-            total_paths += dfs(neighbour, new_mask)
+            total_paths += dfs(neighbour, new_seen_dac, new_seen_fft)
         return total_paths
 
-    return dfs(start, start_mask)
+    return dfs(start)
 
 
 def part_one(rack: dict) -> int:
