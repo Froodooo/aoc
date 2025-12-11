@@ -31,7 +31,7 @@ def bfs(rack, start):
     return paths
 
 
-def bfs_with_required_nodes(rack, start, required_nodes=('dac', 'fft')):
+def dfs_with_required_servers(rack, start, required_nodes=('dac', 'fft')):
     required_index = {server: idx for idx, server in enumerate(required_nodes)}
     required_mask = (1 << len(required_nodes)) - 1
 
@@ -61,5 +61,5 @@ def part_one(rack: dict) -> int:
 
 
 def part_two(rack: List[str]) -> int:
-    paths = bfs_with_required_nodes(rack, 'svr')
+    paths = dfs_with_required_servers(rack, 'svr')
     return paths
