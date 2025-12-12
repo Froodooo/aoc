@@ -5,8 +5,6 @@ from utils import read_to_list
 
 from polyomino.board import Rectangle
 
-PROBABILITY_THRESHOLD = 1.3
-
 
 def parse_presents(lines: List[str]) -> list:
     presents_raw = [x for x in lines if '#' in x]
@@ -56,8 +54,8 @@ def part_one(data: List[str]) -> int:
         board = Rectangle(width, height)
         presents_for_region_length = sum(len(tile)
                                          for tile in presents_for_region)
-        if presents_for_region_length * PROBABILITY_THRESHOLD < board.count:
-            probably_fit += 1
+
+        probably_fit += 1 if presents_for_region_length < board.count else 0
 
         # filler = []
         # if board.count > presents_for_region_length:
