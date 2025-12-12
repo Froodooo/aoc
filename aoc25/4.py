@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+import pytest
 
 from utils import read_to_list
 
@@ -51,3 +52,25 @@ def part_two(data: List[str]) -> int:
             data[y][x] = '.'
 
     return total_removed
+
+
+class TestDay4:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("4.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("4.in"))
+
+    def test_sample_part_one(self, sample_data):
+        assert part_one(sample_data) == 13
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 1516
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 43
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 9122

@@ -1,3 +1,4 @@
-polyomino
+spolyomino
 pulp
 shapely
+pytest

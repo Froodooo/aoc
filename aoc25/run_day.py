@@ -5,6 +5,7 @@ Usage examples:
 python run_day.py --day 1           # runs day 1 using ./1.in
 python run_day.py --day 1 --sample  # runs day 1 using ./1.sample
 python run_day.py --day 2 --part 1  # runs only part 1 for day 2
+python run_day.py --day 1 --test    # runs pytest for day 1
 
 The runner loads a day's module from `./N.py`, determines the input path,
 and calls `parse_input(path)` then `part_one`/`part_two` with parsed data.
@@ -14,6 +15,8 @@ from __future__ import annotations
 import argparse
 import importlib.util
 from pathlib import Path
+import subprocess
+import sys
 import time
 from typing import Optional
 
@@ -38,10 +41,25 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--input", "-i", type=Path, help="input file (default: ./N.in)")
     p.add_argument("--sample", "-s", action="store_true", help="use sample input (./N.sample)")
     p.add_argument("--part", "-p", choices=["1", "2", "both"], default="both", help="which part to run")
-    p.add_argument("--test", "-t", action="store_true", help="run simple sample assertions")
+    p.add_argument("--test", "-t", action="store_true", help="run pytest for this day")
     args = p.parse_args(argv)
 
     day = args.day
+    
+    # Handle pytest mode
+    if args.test:
+        day_file = find_day_file(day)
+        if day_file is None:
+            print(f"Day {day} file not found. Looked in current directory for {day}.py")
+            return 2
+        
+        # Run pytest on this day's file
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", str(day_file), "-v"],
+            cwd=Path.cwd()
+        )
+        return result.returncode
+    
     day_file = find_day_file(day)
     if day_file is None:
         print(f"Day {day} file not found. Looked in current directory for {day}.py")
@@ -70,20 +88,6 @@ def main(argv: list[str] | None = None) -> int:
         return 4
 
     data = parse_input(input_path)
-
-    if args.test:
-        sample_path = Path(f"./{day}.sample")
-        if not sample_path.exists():
-            print(f"Sample file not found: {sample_path}")
-            return 5
-        sample_data = parse_input(sample_path)
-        try:
-            if part_one is not None:
-                assert part_one(sample_data) == 0, "part_one sample test failed"
-            print("✓ Sample tests passed")
-        except AssertionError as e:
-            print(f"✗ {e}")
-            return 6
 
     if args.part in ("1", "both") and part_one is not None:
         t0 = time.perf_counter()

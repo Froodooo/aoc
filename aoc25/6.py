@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List
 from math import prod
+import pytest
 
 from utils import read_to_list
 
@@ -46,3 +47,25 @@ def part_two(data: List[str]) -> int:
             numbers.append(int(column))
 
     return total
+
+
+class TestDay6:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("6.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("6.in"))
+
+    def test_sample_part_one(self, sample_data):
+        assert part_one(sample_data) == 4277556
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 7098065460541
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 3263827
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 13807151830618

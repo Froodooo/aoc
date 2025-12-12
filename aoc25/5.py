@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+import pytest
 
 from utils import read_to_string
 
@@ -39,3 +40,25 @@ def part_two(data: List[str]) -> int:
     fresh_ingredients_count = sum(end - begin + 1 for begin, end in non_overlapping_ranges)
 
     return fresh_ingredients_count
+
+
+class TestDay5:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("5.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("5.in"))
+
+    def test_sample_part_one(self, sample_data):
+        assert part_one(sample_data) == 3
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 744
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 14
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 347468726696961

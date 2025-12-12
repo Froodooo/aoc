@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List
 from shapely.geometry import Polygon
+import pytest
 
 from utils import read_to_list
 
@@ -44,3 +45,25 @@ def part_two(data: List[str]) -> int:
                 if area > largest:
                     largest = area
     return largest
+
+
+class TestDay9:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("9.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("9.in"))
+    
+    def test_sample_part_one(self, sample_data):
+        assert part_one(sample_data) == 50
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 4781546175
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 24
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 1573359081

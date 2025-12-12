@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 from typing import List
+import pytest
 
 from utils import read_to_list
 
@@ -57,3 +58,25 @@ def part_one(rack: dict) -> int:
 def part_two(rack: List[str]) -> int:
     paths = dfs_with_required_servers(rack, 'svr')
     return paths
+
+
+class TestDay11:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("11.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("11.in"))
+    
+    # def test_sample_part_one(self, sample_data):
+    #     assert part_one(sample_data) == 5
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 543
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 2
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 479511112939968

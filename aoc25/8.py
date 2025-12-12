@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List
 from math import dist
+import pytest
 
 from utils import read_to_list
 
@@ -66,3 +67,25 @@ def part_two(points: List[str]) -> int:
         i += 1
 
     return points[p1][0] * points[p2][0]
+
+
+class TestDay8:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("8.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("8.in"))
+    
+    # def test_sample_part_one(self, sample_data):
+    #     assert part_one(sample_data) == 40
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 122430
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 25272
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 8135565324

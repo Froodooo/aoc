@@ -2,6 +2,7 @@ from itertools import combinations
 from pathlib import Path
 from re import sub
 from typing import List
+import pytest
 
 from pulp import LpMinimize, LpProblem, LpVariable, PULP_CBC_CMD, lpSum
 
@@ -107,3 +108,25 @@ def part_two(data: List[str]) -> int:
         button_presses += configure_machine(button_vectors, joltage_requirements)
 
     return button_presses
+
+
+class TestDay10:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("10.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("10.in"))
+    
+    def test_sample_part_one(self, sample_data):
+        assert part_one(sample_data) == 7
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 479
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 33
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 19574

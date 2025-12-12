@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List
 from functools import lru_cache
+import pytest
 
 from utils import read_to_list
 
@@ -48,3 +49,25 @@ def part_two(data: List[str]) -> int:
     (sr, sc) = find_start(data)
 
     return beam(data, (sr, sc))
+
+
+class TestDay7:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("7.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("7.in"))
+    
+    def test_sample_part_one(self, sample_data):
+        assert part_one(sample_data) == 21
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 1696
+
+    def test_sample_part_two(self, sample_data):
+        assert part_two(sample_data) == 40
+
+    def test_actual_part_two(self, actual_data):
+        assert part_two(actual_data) == 187987920774390

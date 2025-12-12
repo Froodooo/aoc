@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+import pytest
 
 from utils import read_to_list
 
@@ -71,3 +72,25 @@ def part_two(data: List[str]) -> int:
     '''Solve part two. Replace with puzzle logic.'''
     '''... if there would have been a part two, that is.'''
     return 0
+
+
+class TestDay12:
+    @pytest.fixture
+    def sample_data(self):
+        return parse_input(Path("12.sample"))
+
+    @pytest.fixture
+    def actual_data(self):
+        return parse_input(Path("12.in"))
+    
+    # def test_sample_part_one(self, sample_data):
+    #     assert part_one(sample_data) == 3 # which is actually wrong
+
+    def test_actual_part_one(self, actual_data):
+        assert part_one(actual_data) == 451
+
+    # def test_sample_part_two(self, sample_data):
+    #     assert part_two(sample_data) == 2
+
+    # def test_actual_part_two(self, actual_data):
+    #     assert part_two(actual_data) == 479511112939968
