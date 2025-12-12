@@ -1,4 +1,4 @@
-spolyomino
+polyomino
 pulp
 shapely
 pytest
